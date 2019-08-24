@@ -1,0 +1,56 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>virtual - dhtml</title>
+
+<style>
+  @import './styles/index.css';
+</style>
+
+<script type="module">
+  import { html, refs } from '../dhtml.js';
+
+  const counterTemplate = html`
+    <button ref="decrement">-</button>
+    <span ref="label"></span>
+    <button ref="increment">+</button>
+    <button ref="reset">↻</button>
+  `;
+
+  function Counter(props) {
+    const view = counterTemplate();
+    const { label, decrement, increment, reset } = refs(view);
+
+    function update() {
+      label.textContent = props.count;
+    }
+
+    decrement.onclick = () => {
+      props.count -= 1;
+      update();
+    };
+
+    increment.onclick = () => {
+      props.count += 1;
+      update();
+    };
+
+    reset.onclick = () => {
+      props.count = 0;
+      update();
+    };
+
+    update();
+
+    return view;
+  }
+
+  document.body.append(
+    Counter({ count: 0 }),
+    Counter({ count: 1 }),
+    Counter({ count: 2 })
+  );
+</script>
+
+<nav>
+  <a href="." rel="home">⌂ home</a>
+</nav>

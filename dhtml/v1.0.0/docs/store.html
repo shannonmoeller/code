@@ -1,0 +1,54 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>store - dhtml</title>
+
+<style>
+  @import './styles/index.css';
+</style>
+
+<script type="module">
+  import { define, html, refs, createStore } from '../dhtml.js';
+
+  const counterTemplate = html`
+    <button ref="decrement">-</button>
+    <span ref="label"></span>
+    <button ref="increment">+</button>
+    <button ref="reset">↻</button>
+  `;
+
+  function Counter() {
+    const view = counterTemplate();
+    const { label, decrement, increment, reset } = refs(view);
+
+    const count = createStore(0);
+
+    count.subscribe(state => {
+      label.textContent = state;
+    });
+
+    decrement.onclick = () => {
+      count.set(x => x - 1);
+    };
+
+    increment.onclick = () => {
+      count.set(x => x + 1);
+    };
+
+    reset.onclick = () => {
+      count.set(0);
+    };
+
+    return view;
+  }
+
+  define('my-counter', Counter);
+
+  document.body.append(Counter());
+</script>
+
+<nav>
+  <a href="." rel="home">⌂ home</a>
+</nav>
+
+<my-counter></my-counter>
+<my-counter></my-counter>

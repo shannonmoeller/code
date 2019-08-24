@@ -1,0 +1,59 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>stateful - dhtml</title>
+
+<style>
+  @import './styles/index.css';
+</style>
+
+<script type="module">
+  import { define, html, refs } from '../dhtml.js';
+
+  const counterTemplate = html`
+    <button ref="decrement">-</button>
+    <span ref="label"></span>
+    <button ref="increment">+</button>
+    <button ref="reset">↻</button>
+  `;
+
+  function Counter() {
+    const view = counterTemplate();
+    const { label, decrement, increment, reset } = refs(view);
+
+    let count = 0;
+
+    function update() {
+      label.textContent = count;
+    }
+
+    decrement.onclick = () => {
+      count -= 1;
+      update();
+    };
+
+    increment.onclick = () => {
+      count += 1;
+      update();
+    };
+
+    reset.onclick = () => {
+      count = 0;
+      update();
+    };
+
+    update();
+
+    return view;
+  }
+
+  define('my-counter', Counter);
+
+  document.body.append(Counter());
+</script>
+
+<nav>
+  <a href="." rel="home">⌂ home</a>
+</nav>
+
+<my-counter></my-counter>
+<my-counter></my-counter>
