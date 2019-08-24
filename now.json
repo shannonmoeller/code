@@ -1,12 +1,6 @@
 {
   "version": 2,
   "name": "code-shannonmoeller",
-  "builds": [
-    {
-      "src": "src/**",
-      "use": "@now/static"
-    }
-  ],
   "routes": [
     {
       "src": "/(.*)",
