@@ -1,0 +1,87 @@
+<!doctype html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width" />
+<title>code</title>
+
+<style>
+	body {
+	  font: 300 16px/1.6 sans-serif;
+	  margin: 3em;
+	}
+
+	a {
+		color: dodgerblue;
+		text-decoration: none;
+	}
+
+	a:focus,
+	a:hover {
+		text-decoration: underline;
+	}
+
+	.banner {
+		display: inline-block;
+		position: absolute;
+		right: 0;
+		top: 0;
+		background: #333;
+		color: white;
+		padding: 0.5em 10em;
+		transform:
+			translate(50%, -50%)
+			rotate(45deg)
+			translate(0, 150%);
+		transform-origin: center center;
+	}
+
+	.banner:focus,
+	.banner:hover {
+		background: dodgerblue;
+		text-decoration: none;
+	}
+
+	.libraries {
+		list-style: none;
+		padding-left: 0;
+		margin: 0;
+	}
+
+	.versions {
+		list-style: none;
+		padding-left: 1em;
+		margin: 0 0 1em;
+	}
+</style>
+
+<ol class="libraries">
+	<li>
+		dhtml
+		<ol class="versions">
+			<li>
+				v1.0.0
+				<a href="/dhtml/v1.0.0/dhtml.js">code</a>
+				<a href="/dhtml/v1.0.0/docs/">docs</a>
+			</li>
+		</ol>
+	</li>
+	<li>
+		store
+		<ol class="versions">
+			<li>
+				v1.0.0
+				<a href="/store/v1.0.0/store.js">code</a>
+			</li>
+		</ol>
+	</li>
+	<li>
+		test
+		<ol class="versions">
+			<li>
+				v1.0.0
+				<a href="/test/v1.0.0/test.js">code</a>
+			</li>
+		</ol>
+	</li>
+</ol>
+
+<a class="banner" href="https://github.com/shannonmoeller/code">GitHub</a>
