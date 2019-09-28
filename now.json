@@ -1,13 +1,4 @@
 {
   "version": 2,
-  "public": true,
-  "routes": [
-    {
-      "src": "(.*)",
-      "dest": "$1",
-      "headers": {
-        "access-control-allow-origin": "*"
-      }
-    }
-  ]
+  "public": true
 }
