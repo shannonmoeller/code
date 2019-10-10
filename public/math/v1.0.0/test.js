@@ -4,7 +4,7 @@ import { lerp, map, norm, round } from './math.js';
 
 test('-- math.js --');
 
-test('lerp()', async (t) => {
+test('lerp(number, number, number)', async (t) => {
 	t.equal(lerp(0, 0, 10), 0);
 	t.equal(lerp(0.3, 0, 10), 3);
 	t.equal(lerp(0.5, 0, 10), 5);
@@ -15,7 +15,7 @@ test('lerp()', async (t) => {
 	t.equal(lerp(0.5, 2, 4), 3);
 });
 
-test('map()', async (t) => {
+test('map(number, number, number, number, number)', async (t) => {
 	t.equal(map(0, 0, 10, 0, 100), 0);
 	t.equal(map(3, 0, 10, 0, 100), 30);
 	t.equal(map(5, 0, 10, 0, 100), 50);
@@ -26,7 +26,7 @@ test('map()', async (t) => {
 	t.equal(map(0, -5, 5, 2, 4), 3);
 });
 
-test('norm()', async (t) => {
+test('norm(number, number, number)', async (t) => {
 	t.equal(norm(0, 0, 10), 0);
 	t.equal(norm(3, 0, 10), 0.3);
 	t.equal(norm(5, 0, 10), 0.5);
@@ -37,7 +37,13 @@ test('norm()', async (t) => {
 	t.equal(norm(3, 2, 4), 0.5);
 });
 
-test('round()', async (t) => {
+test('round(number, ?number)', async (t) => {
+	t.equal(round(0.2), 0);
+	t.equal(round(0.3), 0);
+	t.equal(round(0.5), 1);
+	t.equal(round(0.7), 1);
+	t.equal(round(0.8), 1);
+
 	t.equal(round(0, 0), 0);
 	t.equal(round(0, 10), 0);
 	t.equal(round(3, 10), 0);
