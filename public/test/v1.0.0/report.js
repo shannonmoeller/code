@@ -1,15 +1,33 @@
 const { log } = console;
 const pre = document.createElement('pre');
 
-function toString(x) {
-	return !['number', 'string'].includes(typeof x)
-		? JSON.stringify(x, null, 2)
-		: x;
+function toString(obj) {
+	return typeof obj !== 'string' ? JSON.stringify(obj, null, 2) : obj;
 }
 
-document.body.append(pre);
-
-console.log = (...args) => {
-	pre.append(...args.map(toString), '\n');
+function reportLog(...args) {
 	log(...args);
-};
+
+	setTimeout(() => {
+		const text = args.map(toString).join(' ');
+		const span = document.createElement('span');
+
+		if (text.startsWith('# ')) {
+			span.style.color = 'dodgerblue';
+		}
+
+		if (text.startsWith('ok ')) {
+			span.style.color = 'seagreen';
+		}
+
+		if (text.startsWith('not ok ')) {
+			span.style.color = 'deeppink';
+		}
+
+		span.textContent = text;
+		pre.append(span, '\n');
+	});
+}
+
+console.log = reportLog;
+document.body.append(pre);
