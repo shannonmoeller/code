@@ -1,105 +1,104 @@
 const isInitializedProp = Symbol('com.npmjs.dhtml.define.isInitialized');
 
 export function hyphenate(value) {
-  return value
-    .split(/([A-Z]?[a-z]+)/)
-    .map(x => x.trim())
-    .filter(Boolean)
-    .join('-')
-    .toLowerCase();
+	return value
+		.split(/([A-Z]?[a-z]+)/)
+		.map((x) => x.trim())
+		.filter(Boolean)
+		.join('-')
+		.toLowerCase();
 }
 
-export function normalizeAttribute(name, def = {}) {
-  const { attr, get, set } = def;
+export function normalizeAttribute([name, def = {}]) {
+	const { attr, get, set } = def;
 
-  return {
-    name,
-    attr: attr || hyphenate(name),
-    get: get || String,
-    set: set || String
-  };
+	return {
+		name,
+		attr: attr || hyphenate(name),
+		get: get || String,
+		set: set || String,
+	};
 }
 
 export function reflectAttribute(node, def = {}) {
-  const { name, attr, get, set } = def;
-  const isBoolean = get === Boolean;
+	const { name, attr, get, set } = def;
+	const isBoolean = get === Boolean;
 
-  Object.defineProperty(node, name, {
-    get: () => isBoolean
-      ? node.hasAttribute(attr)
-      : get(node.getAttribute(attr)),
-
-    set: value => isBoolean
-      ? node.toggleAttribute(attr, value)
-      : node.setAttribute(attr, set(value))
-  });
+	if (isBoolean) {
+		Object.defineProperty(node, name, {
+			get: () => node.hasAttribute(attr),
+			set: (value) => node.toggleAttribute(attr, value),
+		});
+	} else {
+		Object.defineProperty(node, name, {
+			get: () => get(node.getAttribute(attr)),
+			set: (value) => node.setAttribute(attr, set(value)),
+		});
+	}
 }
 
 export function define(tagName, attrs, init) {
-  if (arguments.length < 3) {
-    init = attrs;
-    attrs = {};
-  }
+	if (arguments.length < 3) {
+		init = attrs;
+		attrs = {};
+	}
 
-  const attrDefs = Object.entries(attrs).map(
-    ([name, def]) => normalizeAttribute(name, def)
-  );
+	const attrDefs = Object.entries(attrs).map(normalizeAttribute);
+	const observedAttributes = attrDefs.map((x) => x.attr);
 
-  const observedAttributes = attrDefs.map(x => x.attr);
+	class CustomElement extends HTMLElement {
+		static get observedAttributes() {
+			return observedAttributes;
+		}
 
-  class CustomElement extends HTMLElement {
-    static get observedAttributes() {
-      return observedAttributes;
-    }
+		constructor() {
+			super();
 
-    constructor() {
-      super();
+			attrDefs.forEach((def) => {
+				reflectAttribute(this, def);
+			});
+		}
 
-      attrDefs.forEach(def => {
-        reflectAttribute(this, def);
-      });
-    }
+		connectedCallback() {
+			if (!this[isInitializedProp]) {
+				const children = init(this);
 
-    connectedCallback() {
-      if (!this[isInitializedProp]) {
-        const children = init(this);
+				if (children) {
+					if (Array.isArray(children)) {
+						this.append(...children);
+					} else {
+						this.append(children);
+					}
+				}
 
-        if (children) {
-          if (Array.isArray(children)) {
-            this.append(...children);
-          } else {
-            this.append(children);
-          }
-        }
+				this[isInitializedProp] = true;
+			}
 
-        this[isInitializedProp] = true;
-      }
+			if (this.onconnect) {
+				this.onconnect();
+			}
+		}
 
-      if (this.onconnect) {
-        this.onconnect();
-      }
-    }
+		disconnectedCallback() {
+			if (this.ondisconnect) {
+				this.ondisconnect();
+			}
+		}
 
-    disconnectedCallback() {
-      if (this.ondisconnect) {
-        this.ondisconnect();
-      }
-    }
+		adoptedCallback() {
+			if (this.onadopt) {
+				this.onadopt();
+			}
+		}
 
-    adoptedCallback() {
-      if (this.onadopt) {
-        this.onadopt();
-      }
-    }
+		attributeChangedCallback() {
+			if (this.onattributechange) {
+				this.onattributechange();
+			}
+		}
+	}
 
-    attributeChangedCallback() {
-      if (this.onattributechange) {
-        this.onattributechange();
-      }
-    }
-  }
+	customElements.define(tagName, CustomElement);
 
-  customElements.define(tagName, CustomElement);
-
-  return CustomElement;
+	return CustomElement;
 }

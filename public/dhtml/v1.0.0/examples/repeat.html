@@ -3,10 +3,6 @@
 <meta name="viewport" content="width=device-width" />
 <title>repeat - dhtml</title>
 
-<style>
-  @import './css/index.css';
-</style>
-
 <script type="module">
   import { define, html, refs, repeat } from '../dhtml.js';
 
@@ -120,8 +116,8 @@
   define('todo-app', TodoApp);
 </script>
 
-<nav>
-  <a href="." rel="home">⌂ home</a>
-</nav>
+<style>
+  @import '../docs/css/index.css';
+</style>
 
 <todo-app></todo-app>

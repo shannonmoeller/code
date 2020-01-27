@@ -1,4 +1,4 @@
-const { log } = console;
+const { log, error } = console;
 const pre = document.createElement('pre');
 
 function toString(obj) {
@@ -29,5 +29,20 @@ function reportLog(...args) {
 	});
 }
 
+function reportError(...args) {
+	error(...args);
+
+	setTimeout(() => {
+		const text = args.map(toString).join(' ');
+		const span = document.createElement('span');
+
+		span.style.color = 'deeppink';
+		span.textContent = text;
+		pre.append(span, '\n');
+	});
+}
+
 console.log = reportLog;
+console.error = reportError;
+
 document.body.append(pre);

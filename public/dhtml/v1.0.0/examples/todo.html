@@ -1,0 +1,158 @@
+<!doctype html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width" />
+<title>todo - dhtml</title>
+
+<script type="module">
+	import { clone, refs, repeat } from '../dhtml.js';
+
+	function shuffle(arr) {
+		let a = arr.length;
+
+		while (a > 0) {
+			const b = Math.floor(Math.random() * a--);
+
+			[arr[a], arr[b]] = [arr[b], arr[a]];
+		}
+
+		return arr;
+	}
+
+	function TodoApp() {
+		const view = clone('todo-app');
+		const { form, input, reorder, todos } = refs(view);
+
+		let nextId = 0;
+		let items = new Set();
+
+		const scope = {
+			add(value) {
+				items.add({
+					id: nextId++,
+					text: value,
+					done: false
+				});
+
+				update();
+			},
+
+			reorder() {
+				items = new Set(shuffle([...items]));
+
+				update();
+			},
+
+			toggle(item) {
+				item.done = !item.done;
+
+				update();
+			},
+
+			remove(item) {
+				items.delete(item);
+
+				update();
+			}
+		};
+
+		function update() {
+			repeat({
+				items,
+				key: 'id',
+				parent: todos,
+				create: item => TodoItem(item, scope),
+				update: (el, item) => el.update(item)
+			});
+		}
+
+		form.onsubmit = event => {
+			event.preventDefault();
+			scope.add(input.value);
+			input.value = '';
+			input.focus();
+		};
+
+		reorder.onclick = event => {
+			scope.reorder();
+		};
+
+		update();
+
+		return view;
+	}
+
+	function TodoItem(item, scope) {
+		const view = clone('todo-item');
+		const { root, text, done, remove } = refs(view);
+
+		function update(nextItem = item) {
+			text.textContent = nextItem.text;
+			done.checked = nextItem.done;
+			item = nextItem;
+		}
+
+		root.update = update;
+		done.onclick = () => scope.toggle(item);
+		remove.onclick = () => scope.remove(item);
+
+		update();
+
+		return root;
+	}
+
+	document.body.append(TodoApp());
+</script>
+
+<style>
+	@import '../docs/css/index.css';
+
+	.todoApp {
+		background: hsl(0, 0%, 95%);
+		padding: 20px;
+	}
+
+	.todoList {
+		list-style: none;
+		padding: 0;
+	}
+
+	.todoItem {
+		display: flex;
+		align-items: center;
+		padding: 0;
+	}
+
+	.todoItem:hover,
+	.todoItem:focus-within {
+		background: hsl(0, 0%, 100%);
+	}
+
+	.todoItem-text {
+		flex-grow: 1;
+	}
+
+	.todoItem-tick {
+		margin-left: 10px;
+	}
+</style>
+
+<template id="todo-app">
+	<main class="todoApp">
+		<form action="." ref="form">
+			<input ref="input" type="text" />
+			<button>Add</button>
+			<button type="button" ref="reorder">Reorder</button>
+		</form>
+		<ul class="todoList" ref="todos"></ul>
+	</main>
+</template>
+
+<template id="todo-item">
+	<li class="todoItem" ref="root">
+		<label class="todoItem-text">
+			<input class="todoItem-tick" ref="done" type="checkbox" />
+			<span ref="text"></span>
+		</label>
+		<button class="todoItem-remove" ref="remove">Delete</button>
+	</li>
+</template>

@@ -61,54 +61,73 @@ function isDeepEqualObject(a, b) {
 	return aKeys.every((key) => isDeepEqual(a[key], b[key]));
 }
 
-const assert = {
-	count: 0,
-	passed: 0,
-	failed: 0,
-
-	comment(message) {
-		console.log(
-			`# ${String(message)
-				.split('\n')
-				.join('\n# ')}`
-		);
-	},
-
-	ok(value, message = 'should be ok', ...rest) {
-		if (value) {
-			assert.passed += 1;
-			console.log(`ok ${(assert.count += 1)} - ${message}`);
-		} else {
-			assert.failed += 1;
-			console.log(`not ok ${(assert.count += 1)} - ${message}`);
-			console.error(...rest);
-		}
-	},
-
-	equal(a, b, message = 'should be equal') {
-		assert.ok(Object.is(a, b), message, { a, b });
-	},
-
-	notEqual(a, b, message = 'should not be equal') {
-		assert.ok(!Object.is(a, b), message, { a, b });
-	},
-
-	deepEqual(a, b, message = 'should be deeply equal') {
-		assert.ok(isDeepEqual(a, b), message, { a, b });
-	},
-
-	notDeepEqual(a, b, message = 'should not be deeply equal') {
-		assert.ok(!isDeepEqual(a, b), message, { a, b });
-	},
-};
-
 const tests = [];
 
 export function test(description, fn) {
 	tests.push([description, fn]);
 }
 
-setTimeout(async () => {
+export async function run(tests) {
+	if (!tests.length) {
+		return;
+	}
+
+	const assert = {
+		count: 0,
+		passed: 0,
+		failed: 0,
+
+		comment(message) {
+			const formatted = String(message)
+				.split('\n')
+				.join('\n# ');
+
+			console.log(`# ${formatted}`);
+		},
+
+		ok(value, message = 'should be ok', ...rest) {
+			if (value) {
+				assert.passed += 1;
+				console.log(`ok ${(assert.count += 1)} - ${message}`);
+			} else {
+				assert.failed += 1;
+				console.log(`not ok ${(assert.count += 1)} - ${message}`);
+
+				if (rest.length) {
+					console.table(...rest);
+				}
+			}
+		},
+
+		equal(actual, expected, message = 'should be equal') {
+			assert.ok(Object.is(actual, expected), message, {
+				actual,
+				expected,
+			});
+		},
+
+		notEqual(actual, expected, message = 'should not be equal') {
+			assert.ok(!Object.is(actual, expected), message, {
+				actual,
+				expected,
+			});
+		},
+
+		deepEqual(actual, expected, message = 'should be deeply equal') {
+			assert.ok(isDeepEqual(actual, expected), message, {
+				actual,
+				expected,
+			});
+		},
+
+		notDeepEqual(actual, expected, message = 'should not be deeply equal') {
+			assert.ok(!isDeepEqual(actual, expected), message, {
+				actual,
+				expected,
+			});
+		},
+	};
+
 	console.log('TAP version 13');
 
 	const startTime = performance.now();
@@ -122,8 +141,8 @@ setTimeout(async () => {
 			try {
 				await fn(assert);
 			} catch (e) {
-				assert.failed += 1;
-				console.error(e);
+				console.error(e.stack);
+				throw e;
 			}
 		}
 	}
@@ -134,4 +153,6 @@ setTimeout(async () => {
 	console.log(`# fail: ${assert.failed}`);
 	console.log(`1..${assert.count}`);
 	console.log(`# time=${(endTime - startTime).toFixed(2)}ms`);
-});
+}
+
+setTimeout(run, 0, tests);

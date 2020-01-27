@@ -1,7 +1,23 @@
 import { test } from '/test/v1.0.0/test.js';
-import { createFragment, html, svg } from './template.js';
+import { clone, createFragment, html, svg } from './template.js';
 
 test('-- template.js --');
+
+test('clone()', async (t) => {
+	const template = document.createElement('template');
+
+	template.id = 'foo';
+	template.innerHTML = '<span></span>';
+
+	document.body.append(template);
+
+	const a = clone('foo');
+
+	t.equal(a.nodeType, Node.DOCUMENT_FRAGMENT_NODE);
+	t.equal(a.childNodes[0].tagName, 'SPAN');
+
+	template.remove();
+});
 
 test('createFragment()', async (t) => {
 	const foo = () => createFragment`<span></span>`;

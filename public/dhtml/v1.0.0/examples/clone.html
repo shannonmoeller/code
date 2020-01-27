@@ -1,25 +1,14 @@
 <!doctype html>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width" />
-<title>store - dhtml</title>
-
-<style>
-	@import './css/index.css';
-</style>
+<title>clone - dhtml</title>
 
 <script type="module">
 	import { createStore } from '/store/v1.0.0/store.js';
-	import { define, html, refs } from '../dhtml.js';
-
-	const counterTemplate = html`
-		<button ref="decrement">-</button>
-		<span ref="label"></span>
-		<button ref="increment">+</button>
-		<button ref="reset">↻</button>
-	`;
+	import { clone, refs } from '../dhtml.js';
 
 	function Counter() {
-		const view = counterTemplate();
+		const view = clone('counter');
 		const { label, decrement, increment, reset } = refs(view);
 
 		const count = createStore(0);
@@ -43,14 +32,20 @@
 		return view;
 	}
 
-	define('my-counter', Counter);
-
-	document.body.append(Counter());
+	document.body.append(
+		Counter(),
+		Counter(),
+		Counter()
+	);
 </script>
 
-<nav>
-	<a href="." rel="home">⌂ home</a>
-</nav>
+<style>
+	@import '../docs/css/index.css';
+</style>
 
-<my-counter></my-counter>
-<my-counter></my-counter>
+<template id="counter">
+	<button ref="decrement">-</button>
+	<span ref="label"></span>
+	<button ref="increment">+</button>
+	<button ref="reset">↻</button>
+</template>

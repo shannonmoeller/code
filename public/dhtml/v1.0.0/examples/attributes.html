@@ -3,19 +3,8 @@
 <meta name="viewport" content="width=device-width" />
 <title>attributes - dhtml</title>
 
-<style>
-  @import './css/index.css';
-</style>
-
 <script type="module">
-  import { define, html, refs } from '../dhtml.js';
-
-  const counterTemplate = html`
-    <button ref="decrement">-</button>
-    <span ref="label"></span>
-    <button ref="increment">+</button>
-    <button ref="reset">↻</button>
-  `;
+  import { define, clone, refs } from '../dhtml.js';
 
   define(
     'my-counter',
@@ -25,7 +14,7 @@
       }
     },
     element => {
-	  const view = counterTemplate();
+	  const view = clone('counter');
       const { label, decrement, increment, reset } = refs(view);
 
       function update() {
@@ -58,9 +47,16 @@
   document.body.append(two);
 </script>
 
-<nav>
-  <a href="." rel="home">⌂ home</a>
-</nav>
+<style>
+  @import '../docs/css/index.css';
+</style>
+
+<template id="counter">
+  <button ref="decrement">-</button>
+  <span ref="label"></span>
+  <button ref="increment">+</button>
+  <button ref="reset">↻</button>
+</template>
 
 <my-counter></my-counter>
 <my-counter count="1"></my-counter>

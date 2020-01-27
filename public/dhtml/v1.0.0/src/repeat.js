@@ -1,58 +1,70 @@
 const keyProp = Symbol('com.npmjs.dhtml.repeat.key');
 
 const repeatDefaults = {
-  update: () => {},
-  key: 'key'
+	update: () => {},
+	key: 'key',
 };
 
+export function empty(node) {
+	while (node && node.firstChild) {
+		node.firstChild.remove();
+	}
+
+	return node;
+}
+
 export function getKeyedChildNodes(parent) {
-  const keyedNodes = {};
+	const keyedNodes = {};
 
-  let node = parent.firstChild;
+	let node = parent.firstChild;
 
-  while (node) {
-    keyedNodes[node[keyProp]] = node;
-    node = node.nextSibling;
-  }
+	while (node) {
+		keyedNodes[node[keyProp]] = node;
+		node = node.nextSibling;
+	}
 
-  return keyedNodes;
+	return keyedNodes;
 }
 
 export function repeat(options) {
-  const { parent, items, create, update, key } = {
-    ...repeatDefaults,
-    ...options
-  };
+	const { parent, items, create, update, key } = {
+		...repeatDefaults,
+		...options,
+	};
 
-  const getKey = typeof key === 'function' ? key : item => item[key];
-  const keyedNodes = getKeyedChildNodes(parent);
+	if (!items.length && !items.size) {
+		return empty(parent);
+	}
 
-  let prevNode = null;
+	const getKey = typeof key === 'function' ? key : (item) => item[key];
+	const keyedNodes = getKeyedChildNodes(parent);
 
-  items.forEach(item => {
-    const key = getKey(item);
-    let node = keyedNodes[key];
+	let prevNode = null;
 
-    if (node) {
-      update(node, item);
-    } else {
-      node = create(item);
-    }
+	items.forEach((item) => {
+		const key = getKey(item);
+		let node = keyedNodes[key];
 
-    node[keyProp] = key;
+		if (node) {
+			update(node, item);
+		} else {
+			node = create(item);
+		}
 
-    if (prevNode) {
-      prevNode.after(node);
-    } else {
-      parent.prepend(node);
-    }
+		node[keyProp] = key;
 
-    prevNode = node;
-  });
+		if (prevNode) {
+			prevNode.after(node);
+		} else {
+			parent.prepend(node);
+		}
 
-  while (prevNode && prevNode.nextSibling) {
-    prevNode.nextSibling.remove();
-  }
+		prevNode = node;
+	});
 
-  return parent;
+	while (prevNode && prevNode.nextSibling) {
+		prevNode.nextSibling.remove();
+	}
+
+	return parent;
 }

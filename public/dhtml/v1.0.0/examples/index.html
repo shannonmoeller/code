@@ -1,0 +1,128 @@
+<!doctype html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width" />
+<title>playground - dhtml</title>
+
+<script src="https://ajaxorg.github.io/ace-builds/src-noconflict/ace.js"></script>
+<script type="module">
+	const code = document.getElementById('code');
+	const preview = document.getElementById('preview');
+
+	const editor = ace.edit(code, {
+		mode: 'ace/mode/html',
+		theme: 'ace/theme/monokai',
+		showPrintMargin: false,
+	});
+
+	function onEditorChange(content) {
+		preview.src = './blank.html';
+		preview.onload = () => {
+			preview.onload = null;
+			preview.contentDocument.open();
+			preview.contentDocument.write(content);
+			preview.contentDocument.close();
+		};
+	}
+
+	function onHashChange() {
+		const file = location.hash.replace(/^\W+/, '');
+
+		fetch(`./${file || 'attributes.html'}`)
+			.then(res => res.text())
+			.then(data => editor.session.setValue(data));
+	}
+
+	editor.on('change', () => onEditorChange(editor.getValue()));
+	addEventListener('hashchange', onHashChange);
+	onHashChange();
+</script>
+
+<style>
+	* {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		color: inherit;
+		font: inherit;
+		text-decoration: none;
+	}
+
+	body {
+		overflow: hidden;
+		font: normal 12px/16px Monaco, Menlo, Consolas;
+	}
+
+	.link {
+		display: block;
+	}
+
+	.link:hover,
+	.link:focus {
+		color: #e6db73;
+	}
+
+	.playground {
+		display: grid;
+		grid-template:
+			"files code preview" 1fr
+			/ auto 1fr 1fr;
+		height: 100vh;
+		width: 100vw;
+	}
+
+	@media (max-width: 1024px) {
+		.playground {
+			grid-template:
+				"files code" 1fr
+				"preview preview" 1fr
+				/ auto 1fr;
+		}
+	}
+
+	.playground-files {
+		flex-basis: auto;
+		list-style: none;
+		padding: 0 1em;
+		background: #303129;
+		color: #ffffff;
+	}
+
+	.playground-code {
+		grid-area: code;
+	}
+
+	.playground-code > * {
+		height: 100%;
+		width: 100%;
+	}
+
+	.playground-preview {
+		grid-area: preview;
+	}
+
+	.playground-preview > * {
+		height: 100%;
+		width: 100%;
+	}
+</style>
+
+<main class="playground">
+	<nav class="playground-files">
+		<a class="link" href="../docs/">..</a>
+		<a class="link" href="#!/attributes.html">attributes.html</a>
+		<a class="link" href="#!/children.html">children.html</a>
+		<a class="link" href="#!/clone.html">clone.html</a>
+		<a class="link" href="#!/repeat.html">repeat.html</a>
+		<a class="link" href="#!/stateful.html">stateful.html</a>
+		<a class="link" href="#!/store.html">store.html</a>
+		<a class="link" href="#!/todo.html">todo.html</a>
+		<a class="link" href="#!/virtual.html">virtual.html</a>
+	</nav>
+	<article class="playground-code">
+		<textarea id="code"></textarea>
+	</article>
+	<article class="playground-preview">
+		<iframe src="./blank.html" id="preview"></iframe>
+	</article>
+</main>
+

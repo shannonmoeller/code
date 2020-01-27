@@ -4,7 +4,7 @@ import {
 	define,
 	hyphenate,
 	normalizeAttribute,
-	reflectAttribute
+	reflectAttribute,
 } from './define.js';
 
 test('-- define.js --');
@@ -19,32 +19,35 @@ test('hyphenate(str)', async (t) => {
 	t.equal(hyphenate('HTMLDivElement'), 'html-div-element');
 });
 
-test('normalizeAttribute(str, obj)', async (t) => {
-	t.deepEqual(normalizeAttribute('foo', {}), {
+test('normalizeAttribute([str, obj])', async (t) => {
+	t.deepEqual(normalizeAttribute(['foo', {}]), {
 		name: 'foo',
 		attr: 'foo',
 		get: String,
-		set: String
+		set: String,
 	});
 
-	t.deepEqual(normalizeAttribute('fooBar', {}), {
+	t.deepEqual(normalizeAttribute(['fooBar', {}]), {
 		name: 'fooBar',
 		attr: 'foo-bar',
 		get: String,
-		set: String
+		set: String,
 	});
 
 	t.deepEqual(
-		normalizeAttribute('fooBar', {
-			attr: 'bar-foo',
-			get: JSON.parse,
-			set: JSON.stringify
-		}),
+		normalizeAttribute([
+			'fooBar',
+			{
+				attr: 'bar-foo',
+				get: JSON.parse,
+				set: JSON.stringify,
+			},
+		]),
 		{
 			name: 'fooBar',
 			attr: 'bar-foo',
 			get: JSON.parse,
-			set: JSON.stringify
+			set: JSON.stringify,
 		}
 	);
 });
@@ -56,14 +59,14 @@ test('reflectAttribute(obj)', async (t) => {
 		name: 'fooBar',
 		attr: 'bar-foo',
 		get: Boolean,
-		set: String
+		set: String,
 	});
 
 	reflectAttribute(node, {
 		name: 'bazBat',
 		attr: 'bat-baz',
 		get: JSON.parse,
-		set: JSON.stringify
+		set: JSON.stringify,
 	});
 
 	node.fooBar = true;
@@ -82,8 +85,8 @@ test('reflectAttribute(obj)', async (t) => {
 test('define(str [, obj], fn)', async (t) => {
 	const elClass = define('foo-bar', {
 		baz: {
-			get: Boolean
-		}
+			get: Boolean,
+		},
 	}, (ref) => {
 		t.equal(el, ref, 'same element');
 

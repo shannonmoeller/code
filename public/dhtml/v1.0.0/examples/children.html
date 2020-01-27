@@ -3,19 +3,11 @@
 <meta name="viewport" content="width=device-width" />
 <title>children - dhtml</title>
 
-<style>
-  @import './css/index.css';
-</style>
-
 <script type="module">
-  import { define, html, refs } from '../dhtml.js';
-
-  const containerTemplate = html`
-    [[<span ref="slot"></span>]]
-  `;
+  import { define, clone, refs } from '../dhtml.js';
 
   function Container(element) {
-    const view = containerTemplate();
+    const view = clone('container');
     const { slot } = refs(view);
 
     slot.append(...element.childNodes);
@@ -31,9 +23,13 @@
   );
 </script>
 
-<nav>
-  <a href="." rel="home">⌂ home</a>
-</nav>
+<style>
+  @import '../docs/css/index.css';
+</style>
+
+<template id="container">
+  [[<span ref="slot"></span>]]
+</template>
 
 <my-container>hello</my-container>
 <my-container>world</my-container>
