@@ -162,6 +162,15 @@
 		margin-top: 1em;
 	}
 
+	.todo-button {
+		cursor: pointer;
+	}
+
+	.todo-button:hover,
+	.todo-button:focus {
+		color: hsl(80, 50%, 50%);
+	}
+
 	.todo-input {
 		display: block;
 		padding: 0.5em 0.75em;
@@ -170,13 +179,17 @@
 		width: 100%;
 	}
 
-	.todo-list {
-		list-style: none;
+	.todo-input::placeholder {
+		color: hsl(0, 0%, 75%);
 	}
 
 	.todo-item {
 		display: grid;
 		grid-template-columns: 1fr auto;
+	}
+
+	.todo-list {
+		list-style: none;
 	}
 
 	.todo-title {
@@ -202,6 +215,6 @@
 			<input type="checkbox" ref="done" />
 			<span ref="text"></span>
 		</label>
-		<button ref="remove">Delete</button>
+		<button class="todo-button" ref="remove">Delete</button>
 	</li>
 </template>
