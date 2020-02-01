@@ -1,8 +1,8 @@
 const { log, error } = console;
 const pre = document.createElement('pre');
 
-function toString(obj) {
-	return typeof obj !== 'string' ? JSON.stringify(obj, null, 2) : obj;
+function toString(value) {
+	return typeof value !== 'string' ? JSON.stringify(value, null, 2) : value;
 }
 
 function reportLog(...args) {

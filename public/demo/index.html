@@ -1,0 +1,118 @@
+<!doctype html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width" />
+<title>demo - dhtml</title>
+
+<script src="https://ajaxorg.github.io/ace-builds/src-noconflict/ace.js"></script>
+<script type="module">
+	const code = document.getElementById('code');
+	const preview = document.getElementById('preview');
+	const editor = ace.edit(code, {
+		mode: 'ace/mode/html',
+		theme: 'ace/theme/monokai',
+		showPrintMargin: false,
+	});
+
+	let currentUrl = '';
+
+	function onEditorChange(content) {
+		preview.srcdoc = content.replace(
+			/^(<!doctype html>)?/i,
+			`$1<base href="${currentUrl}" />`
+		);
+	}
+
+	function onHashChange() {
+		const url = new URL(
+			location.hash.replace(/^#!\//, ''),
+			location.origin
+		);
+
+		if (url.origin !== location.origin || url.pathname === '/') {
+			currentUrl = '';
+			editor.session.setValue('');
+			return;
+		}
+
+		fetch(url)
+			.then(response => response.text())
+			.then(content => {
+				currentUrl = String(url);
+				editor.session.setValue(content);
+			});
+	}
+
+	editor.on('change', () => onEditorChange(editor.getValue()));
+	addEventListener('hashchange', onHashChange);
+	onHashChange();
+</script>
+
+<style>
+	* {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		color: inherit;
+		font: inherit;
+		text-decoration: none;
+	}
+
+	body {
+		overflow: hidden;
+		font: normal 12px/16px Monaco, Menlo, Consolas;
+	}
+
+	.demo {
+		display: grid;
+		grid-template:
+			'code preview' 1fr
+			/ 1fr 1fr;
+		height: 100vh;
+		width: 100vw;
+	}
+
+	@media (orientation: portrait) {
+		.demo {
+			grid-template:
+				'code' 1fr
+				'preview' 1fr
+				/ 1fr;
+		}
+	}
+
+	.demo-files {
+		flex-basis: auto;
+		list-style: none;
+		padding: 0 1em;
+		background: #303129;
+		color: #ffffff;
+	}
+
+	.demo-code {
+		grid-area: code;
+	}
+
+	.demo-code > * {
+		height: 100%;
+		width: 100%;
+	}
+
+	.demo-preview {
+		grid-area: preview;
+	}
+
+	.demo-preview > * {
+		height: 100%;
+		width: 100%;
+	}
+</style>
+
+<main class="demo">
+	<article class="demo-code">
+		<textarea id="code"></textarea>
+	</article>
+	<article class="demo-preview">
+		<iframe id="preview" srcdoc=""></iframe>
+	</article>
+</main>
+

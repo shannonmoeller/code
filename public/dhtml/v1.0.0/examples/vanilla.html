@@ -1,0 +1,207 @@
+<!doctype html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width" />
+<title>vanilla</title>
+
+<script type="module">
+	const nodeCache = new WeakMap();
+
+	function clone(id) {
+		const node = document.getElementById(id);
+
+		return node.content.cloneNode(true);
+	}
+
+	function empty(node) {
+		while (node && node.firstChild) {
+			node.firstChild.remove();
+		}
+
+		return node;
+	}
+
+	function refs(node) {
+		const refMap = {};
+
+		for (const child of node.querySelectorAll('[ref]')) {
+			refMap[child.getAttribute('ref')] = child;
+			child.removeAttribute('ref');
+		}
+
+		return refMap;
+	}
+
+	function repeat({ items, parent, create, update }) {
+		if (!items.length && !items.size) {
+			empty(parent);
+			return;
+		}
+
+		let prevNode = null;
+
+		for (const item of items) {
+			let node = nodeCache.get(item);
+
+			if (node) {
+				update(node, item);
+			} else {
+				node = create(item);
+			}
+
+			nodeCache.set(item, node);
+
+			if (prevNode) {
+				prevNode.after(node);
+			} else {
+				parent.prepend(node);
+			}
+
+			prevNode = node;
+		}
+
+		while (prevNode && prevNode.nextSibling) {
+			prevNode.nextSibling.remove();
+		}
+	}
+
+	function TodoApp() {
+		const view = clone('todoApp');
+		const { root, form, input, list } = refs(view);
+
+		let index = 0;
+		let items = new Set();
+
+		const scope = {
+			add(value) {
+				items.add({
+					id: index++,
+					text: value,
+					done: false
+				});
+
+				root.update();
+			},
+
+			toggle(item) {
+				item.done = !item.done;
+
+				root.update();
+			},
+
+			remove(item) {
+				items.delete(item);
+
+				root.update();
+			}
+		};
+
+		root.update = () => {
+			repeat({
+				items,
+				parent: list,
+				create: item => TodoItem(item, scope),
+				update: (el, item) => el.update(item)
+			});
+		};
+
+		form.onsubmit = (event) => {
+			event.preventDefault();
+			scope.add(input.value);
+			input.value = '';
+			input.focus();
+		};
+
+		root.update();
+
+		return root;
+	}
+
+	function TodoItem(item, scope) {
+		const view = clone('todoItem');
+		const { root, text, done, remove } = refs(view);
+
+		root.update = (nextItem = item) => {
+			text.textContent = nextItem.text;
+			done.checked = nextItem.done;
+			item = nextItem;
+		};
+
+		done.onclick = () => {
+			scope.toggle(item);
+		};
+
+		remove.onclick = () => {
+			scope.remove(item);
+		};
+
+		root.update(item);
+
+		return root;
+	}
+
+	document.body.append(TodoApp());
+</script>
+
+<style>
+	* {
+		margin: 0;
+		padding: 0;
+		background: transparent;
+		border: 0;
+		box-sizing: border-box;
+		color: inherit;
+		font: inherit;
+	}
+
+	body {
+		margin: 30px;
+		font: 300 16px/1.6 sans-serif;
+	}
+
+	.todo-app > * + * {
+		margin-top: 1em;
+	}
+
+	.todo-input {
+		display: block;
+		padding: 0.5em 0.75em;
+		border: 1px solid hsl(0, 0%, 90%);
+		line-height: 1;
+		width: 100%;
+	}
+
+	.todo-list {
+		list-style: none;
+	}
+
+	.todo-item {
+		display: grid;
+		grid-template-columns: 1fr auto;
+	}
+
+	.todo-title {
+		font-size: 3em;
+		line-height: 1;
+	}
+</style>
+
+<template id="todoApp">
+	<main class="todo-app" ref="root">
+		<h1 class="todo-title">todos</h1>
+		<form action="." ref="form">
+			<input class="todo-input" placeholder="What needs to be done?" ref="input" />
+			<button hidden>Add</button>
+		</form>
+		<ul class="todo-list" ref="list"></ul>
+	</main>
+</template>
+
+<template id="todoItem">
+	<li class="todo-item" ref="root">
+		<label>
+			<input type="checkbox" ref="done" />
+			<span ref="text"></span>
+		</label>
+		<button ref="remove">Delete</button>
+	</li>
+</template>
