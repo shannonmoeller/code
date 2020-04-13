@@ -4,21 +4,26 @@
 <title>test tests</title>
 
 <script type="module">
-  import { test } from './test.js';
-  import './report.js';
+	import { test } from './test.js';
+	import './report.js';
 
-  test('pass', async (t) => {
-    t.ok(true);
-    t.ok(true, 'yay');
-	t.equal(true, true);
-  });
+	test('pass', async (t) => {
+		t.ok(true);
+		t.ok(true, 'yay');
+		t.equal(true, true);
+		t.deepEqual({}, {});
+		t.deepEqual([], []);
 
-  test('fail', (t) => {
-    t.ok(false);
-    t.ok(false, 'dang');
-    t.equal(
-      {foo: 1, bar: 2},
-      {foo: 3, baz: 2},
-    );
-  });
+		const now = Date.now();
+		t.deepEqual(new Date(now), new Date(now));
+	});
+
+	test('fail', (t) => {
+		t.ok(false);
+		t.ok(false, 'dang');
+		t.equal(
+			{foo: 1, bar: 2},
+			{foo: 3, baz: 2},
+		);
+	});
 </script>

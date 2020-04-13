@@ -14,6 +14,10 @@ function isDeepEqual(a, b) {
 		return false;
 	}
 
+	if (typeOfA === 'Date') {
+		return Number(a) === Number(b);
+	}
+
 	if (typeOfA.endsWith('Array') || typeOfA === 'Set') {
 		return isDeepEqualArray(Array.from(a), Array.from(b));
 	}
