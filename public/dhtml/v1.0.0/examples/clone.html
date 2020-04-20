@@ -4,7 +4,7 @@
 <title>clone - dhtml</title>
 
 <script type="module">
-	import { createStore } from '/store/v1.0.0/store.js';
+	import { createStore } from '/store/v2.0.0/store.js';
 	import { clone, refs } from '../dhtml.js';
 
 	function Counter() {
@@ -13,9 +13,9 @@
 
 		const count = createStore(0);
 
-		count.subscribe(state => {
+		function update(state) {
 			label.textContent = state;
-		});
+		}
 
 		decrement.onclick = () => {
 			count.set(x => x - 1);
@@ -28,6 +28,8 @@
 		reset.onclick = () => {
 			count.set(0);
 		};
+
+		count.subscribe(update, { immediate: true });
 
 		return view;
 	}
