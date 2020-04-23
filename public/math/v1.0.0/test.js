@@ -1,8 +1,16 @@
 import { test } from '/test/v1.0.0/test.js';
 
-import { lerp, map, norm, round } from './math.js';
+import { clamp, lerp, map, norm, round } from './math.js';
 
 test('-- math.js --');
+
+test('clamp(number, number, number)', async (t) => {
+	t.equal(clamp(-1, 0, 10), 0);
+	t.equal(clamp(0, 0, 10), 0);
+	t.equal(clamp(5, 0, 10), 5);
+	t.equal(clamp(10, 0, 10), 10);
+	t.equal(clamp(11, 0, 10), 10);
+});
 
 test('lerp(number, number, number)', async (t) => {
 	t.equal(lerp(0, 0, 10), 0);
