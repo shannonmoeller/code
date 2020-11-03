@@ -20,7 +20,7 @@
 
 	function TodoApp() {
 		const view = clone('todo-app');
-		const { form, input, reorder, todos } = refs(view);
+		const { form, input, reorder, list } = refs(view);
 
 		let nextId = 0;
 		let items = new Set();
@@ -52,14 +52,14 @@
 				items.delete(item);
 
 				update();
-			}
+			},
 		};
 
 		function update() {
 			repeat({
 				items,
 				key: 'id',
-				parent: todos,
+				parent: list,
 				create: item => TodoItem(item, scope),
 				update: (el, item) => el.update(item)
 			});
@@ -104,55 +104,58 @@
 </script>
 
 <style>
-	@import './css/index.css';
+	@import '/assets/index.css';
 
-	.todoApp {
-		background: hsl(0, 0%, 95%);
-		padding: 20px;
+	.todo-app {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1em;
 	}
 
-	.todoList {
+	.todo-form {
+		display: grid;
+		grid-template-columns: 1fr min-content min-content;
+		gap: 0.5em;
+	}
+
+	.todo-item {
+		display: grid;
+		grid-template-columns: 1fr auto;
+	}
+
+	.todo-list {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 0.5em;
+		margin: 0;
+		padding: 0;
 		list-style: none;
-		padding: 0;
 	}
 
-	.todoItem {
-		display: flex;
-		align-items: center;
-		padding: 0;
-	}
-
-	.todoItem:hover,
-	.todoItem:focus-within {
-		background: hsl(0, 0%, 100%);
-	}
-
-	.todoItem-text {
-		flex-grow: 1;
-	}
-
-	.todoItem-tick {
-		margin-left: 10px;
+	.todo-title {
+		font-size: 3em;
+		line-height: 1;
 	}
 </style>
 
 <template id="todo-app">
-	<main class="todoApp">
-		<form action="." ref="form">
-			<input ref="input" type="text" />
-			<button>Add</button>
+	<main class="todo-app" ref="root">
+		<h1 class="todo-title">todos</h1>
+		<form class="todo-form" action="." ref="form">
+			<input placeholder="What needs to be done?" ref="input" />
+			<button type="submit">Add</button>
 			<button type="button" ref="reorder">Reorder</button>
 		</form>
-		<ul class="todoList" ref="todos"></ul>
+		<ul class="todo-list" ref="list"></ul>
 	</main>
 </template>
 
 <template id="todo-item">
-	<li class="todoItem" ref="root">
-		<label class="todoItem-text">
-			<input class="todoItem-tick" ref="done" type="checkbox" />
+	<li class="todo-item" ref="root">
+		<label>
+			<input type="checkbox" ref="done" />
 			<span ref="text"></span>
 		</label>
-		<button class="todoItem-remove" ref="remove">Delete</button>
+		<button ref="remove">Delete</button>
 	</li>
 </template>

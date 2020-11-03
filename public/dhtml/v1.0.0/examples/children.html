@@ -4,31 +4,25 @@
 <title>children - dhtml</title>
 
 <script type="module">
-  import { define, clone, refs } from '../dhtml.js';
+	import { defineElement, clone, refs } from '../dhtml.js';
 
-  function Container(element) {
-    const view = clone('container');
-    const { slot } = refs(view);
+	function Container(element) {
+		const view = clone('container');
+		const { slot } = refs(view);
 
-    slot.append(...element.childNodes);
+		slot.append(...element.childNodes);
+		element.append(view);
+	}
 
-    return view;
-  }
-
-  define('my-container', Container);
-
-  document.body.append(
-    Container({ childNodes: ['goodnight'] }),
-    Container({ childNodes: ['moon'] })
-  );
+	defineElement('my-container', Container);
 </script>
 
 <style>
-  @import './css/index.css';
+	@import '/assets/index.css';
 </style>
 
 <template id="container">
-  [[<span ref="slot"></span>]]
+	[[<span ref="slot"></span>]]
 </template>
 
 <my-container>hello</my-container>

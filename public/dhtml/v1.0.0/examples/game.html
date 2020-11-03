@@ -1,0 +1,69 @@
+<!doctype html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width" />
+<title>define</title>
+
+<script type="module">
+	import { defineElement } from '../dhtml.js';
+
+	function GameGrid(grid) {
+		let xNode = document.createTextNode(grid.x);
+		let yNode = document.createTextNode(grid.y);
+
+		function update() {
+			xNode.textContent = grid.x;
+			yNode.textContent = grid.y;
+		}
+
+		grid.addEventListener('click', (event) => {
+			grid.checked = !grid.checked;
+		});
+
+		grid.addEventListener('mousemove', (event) => {
+			grid.x = event.offsetX;
+			grid.y = event.offsetY;
+			update();
+		});
+
+		grid.append(xNode, ',', yNode);
+	}
+
+	defineElement('game-grid', GameGrid, {
+		attributes: {
+			checked: Boolean,
+			x: Number,
+			y: Number,
+		},
+	});
+</script>
+
+<style>
+	@import '/assets/index.css';
+
+	.demos {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, 150px);
+		place-content: center;
+	}
+
+	game-grid {
+		display: block;
+		box-sizing: border-box;
+		padding: 1em;
+		height: 150px;
+		width: 150px;
+		background: black;
+		color: white;
+	}
+
+	game-grid[checked] {
+		background: dodgerblue;
+	}
+</style>
+
+<main class="demos">
+	<game-grid x="0" y="0"></game-grid>
+	<game-grid x="0" y="0"></game-grid>
+	<game-grid x="0" y="0" checked></game-grid>
+	<game-grid x="0" y="0"></game-grid>
+</main>

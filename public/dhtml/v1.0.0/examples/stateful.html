@@ -4,52 +4,52 @@
 <title>stateful - dhtml</title>
 
 <script type="module">
-  import { define, html, refs } from '../dhtml.js';
+	import { defineElement, html, refs } from '../dhtml.js';
 
-  const counterTemplate = html`
-    <button ref="decrement">-</button>
-    <span ref="label"></span>
-    <button ref="increment">+</button>
-    <button ref="reset">↻</button>
-  `;
+	const counterTemplate = html`
+		<button ref="decrement">-</button>
+		<span ref="label"></span>
+		<button ref="increment">+</button>
+		<button ref="reset">↻</button>
+	`;
 
-  function Counter() {
-    const view = counterTemplate();
-    const { label, decrement, increment, reset } = refs(view);
+	function Counter(element) {
+		const view = counterTemplate();
+		const { label, decrement, increment, reset } = refs(view);
 
-    let count = 0;
+		let count = 0;
 
-    function update() {
-      label.textContent = count;
-    }
+		function update() {
+			label.textContent = count;
+		}
 
-    decrement.onclick = () => {
-      count -= 1;
-      update();
-    };
+		decrement.onclick = () => {
+			count -= 1;
+			update();
+		};
 
-    increment.onclick = () => {
-      count += 1;
-      update();
-    };
+		increment.onclick = () => {
+			count += 1;
+			update();
+		};
 
-    reset.onclick = () => {
-      count = 0;
-      update();
-    };
+		reset.onclick = () => {
+			count = 0;
+			update();
+		};
 
-    update();
+		update();
 
-    return view;
-  }
+		element.append(view);
+	}
 
-  define('my-counter', Counter);
+	defineElement('my-counter', Counter);
 
-  document.body.append(Counter());
+	document.body.append(Counter());
 </script>
 
 <style>
-  @import './css/index.css';
+	@import '/assets/index.css';
 </style>
 
 <my-counter></my-counter>

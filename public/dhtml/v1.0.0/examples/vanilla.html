@@ -13,8 +13,8 @@
 	}
 
 	function empty(node) {
-		while (node && node.firstChild) {
-			node.firstChild.remove();
+		while (node && node.lastChild) {
+			node.lastChild.remove();
 		}
 
 		return node;
@@ -64,9 +64,21 @@
 		}
 	}
 
+	function shuffle(arr) {
+		let a = arr.length;
+
+		while (a > 0) {
+			const b = Math.floor(Math.random() * a--);
+
+			[arr[a], arr[b]] = [arr[b], arr[a]];
+		}
+
+		return arr;
+	}
+
 	function TodoApp() {
 		const view = clone('todoApp');
-		const { root, form, input, list } = refs(view);
+		const { root, form, input, reorder, list } = refs(view);
 
 		let index = 0;
 		let items = new Set();
@@ -82,6 +94,12 @@
 				root.update();
 			},
 
+			reorder() {
+				items = new Set(shuffle([...items]));
+
+				root.update();
+			},
+
 			toggle(item) {
 				item.done = !item.done;
 
@@ -92,7 +110,7 @@
 				items.delete(item);
 
 				root.update();
-			}
+			},
 		};
 
 		root.update = () => {
@@ -109,6 +127,10 @@
 			scope.add(input.value);
 			input.value = '';
 			input.focus();
+		};
+
+		reorder.onclick = event => {
+			scope.reorder();
 		};
 
 		root.update();
@@ -143,44 +165,18 @@
 </script>
 
 <style>
-	* {
-		margin: 0;
-		padding: 0;
-		background: transparent;
-		border: 0;
-		box-sizing: border-box;
-		color: inherit;
-		font: inherit;
+	@import '/assets/index.css';
+
+	.todo-app {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1em;
 	}
 
-	body {
-		margin: 30px;
-		font: 300 16px/1.6 sans-serif;
-	}
-
-	.todo-app > * + * {
-		margin-top: 1em;
-	}
-
-	.todo-button {
-		cursor: pointer;
-	}
-
-	.todo-button:hover,
-	.todo-button:focus {
-		color: hsl(80, 50%, 50%);
-	}
-
-	.todo-input {
-		display: block;
-		padding: 0.5em 0.75em;
-		border: 1px solid hsl(0, 0%, 90%);
-		line-height: 1;
-		width: 100%;
-	}
-
-	.todo-input::placeholder {
-		color: hsl(0, 0%, 75%);
+	.todo-form {
+		display: grid;
+		grid-template-columns: 1fr min-content min-content;
+		gap: 0.5em;
 	}
 
 	.todo-item {
@@ -189,6 +185,11 @@
 	}
 
 	.todo-list {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 0.5em;
+		margin: 0;
+		padding: 0;
 		list-style: none;
 	}
 
@@ -201,9 +202,10 @@
 <template id="todoApp">
 	<main class="todo-app" ref="root">
 		<h1 class="todo-title">todos</h1>
-		<form action="." ref="form">
-			<input class="todo-input" placeholder="What needs to be done?" ref="input" />
-			<button hidden>Add</button>
+		<form class="todo-form" action="." ref="form">
+			<input placeholder="What needs to be done?" ref="input" />
+			<button type="submit">Add</button>
+			<button type="button" ref="reorder">Reorder</button>
 		</form>
 		<ul class="todo-list" ref="list"></ul>
 	</main>
@@ -215,6 +217,6 @@
 			<input type="checkbox" ref="done" />
 			<span ref="text"></span>
 		</label>
-		<button class="todo-button" ref="remove">Delete</button>
+		<button ref="remove">Delete</button>
 	</li>
 </template>

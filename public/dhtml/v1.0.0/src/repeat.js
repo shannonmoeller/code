@@ -6,8 +6,8 @@ const repeatDefaults = {
 };
 
 export function empty(node) {
-	while (node && node.firstChild) {
-		node.firstChild.remove();
+	while (node && node.lastChild) {
+		node.lastChild.remove();
 	}
 
 	return node;

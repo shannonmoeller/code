@@ -8,27 +8,10 @@ const ENTITIES = {
 	'`': '&#96;',
 };
 
-class SafeString {
+class SafeString extends String {
 	constructor(value) {
-		this.raw = String(value);
-
+		super(value);
 		Object.freeze(this);
-	}
-
-	get length() {
-		return this.raw.length;
-	}
-
-	toJSON() {
-		return this.raw;
-	}
-
-	toString() {
-		return this.raw;
-	}
-
-	valueOf() {
-		return this.raw;
 	}
 }
 

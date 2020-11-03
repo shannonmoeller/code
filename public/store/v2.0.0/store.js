@@ -9,15 +9,17 @@ export function createStore(state) {
 		set(next) {
 			state = typeof next === 'function' ? next(state) : next;
 
-			listeners.forEach((listener) => {
-				listener(state);
-			});
+			return Promise.all(
+				[...listeners].map(async (listener) => {
+					await listener(state);
+				})
+			);
 		},
 
-		subscribe(listener, { immediate } = {}) {
+		subscribe(listener, options = {}) {
 			listeners.add(listener);
 
-			if (immediate) {
+			if (options.immediate) {
 				listener(state);
 			}
 

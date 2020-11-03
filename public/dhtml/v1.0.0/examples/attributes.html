@@ -4,58 +4,55 @@
 <title>attributes - dhtml</title>
 
 <script type="module">
-  import { define, clone, refs } from '../dhtml.js';
+	import { defineElement, clone, refs } from '../dhtml.js';
 
-  define(
-    'my-counter',
-    {
-      count: {
-        get: Number
-      }
-    },
-    element => {
-	  const view = clone('counter');
-      const { label, decrement, increment, reset } = refs(view);
+	function Counter(element) {
+		const view = clone('counter');
+		const { label, decrement, increment, reset } = refs(view);
 
-      function update() {
-        label.textContent = element.count;
-      }
+		function update() {
+			label.textContent = element.count || 0;
+		}
 
-      decrement.onclick = () => {
-        element.count -= 1;
-      };
+		decrement.onclick = () => {
+			element.count -= 1;
+		};
 
-      increment.onclick = () => {
-        element.count += 1;
-      };
+		increment.onclick = () => {
+			element.count += 1;
+		};
 
-      reset.onclick = () => {
-        element.count = 0;
-      };
+		reset.onclick = () => {
+			element.count = 0;
+		};
 
-      element.onconnect = update;
-      element.onattributechange = update;
+		element.onconnect = update;
+		element.onattributechange = update;
+		element.append(view);
+	}
 
-      return view;
-    }
-  );
+	defineElement('my-counter', Counter, {
+		attributes: {
+			count: Number,
+		},
+	});
 
-  const two = document.createElement('my-counter');
+	const two = document.createElement('my-counter');
 
-  two.count = 2;
+	two.count = 2;
 
-  document.body.append(two);
+	document.body.append(two);
 </script>
 
 <style>
-  @import './css/index.css';
+	@import '/assets/index.css';
 </style>
 
 <template id="counter">
-  <button ref="decrement">-</button>
-  <span ref="label"></span>
-  <button ref="increment">+</button>
-  <button ref="reset">↻</button>
+	<button ref="decrement">-</button>
+	<span ref="label"></span>
+	<button ref="increment">+</button>
+	<button ref="reset">↻</button>
 </template>
 
 <my-counter></my-counter>

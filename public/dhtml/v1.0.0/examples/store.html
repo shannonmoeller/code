@@ -5,7 +5,7 @@
 
 <script type="module">
 	import { createStore } from '/store/v2.0.0/store.js';
-	import { define, html, refs } from '../dhtml.js';
+	import { defineElement, html, refs } from '../dhtml.js';
 
 	const counterTemplate = html`
 		<button ref="decrement">-</button>
@@ -14,7 +14,7 @@
 		<button ref="reset">↻</button>
 	`;
 
-	function Counter() {
+	function Counter(element) {
 		const view = counterTemplate();
 		const { label, decrement, increment, reset } = refs(view);
 
@@ -37,17 +37,16 @@
 		};
 
 		count.subscribe(update, { immediate: true });
-
-		return view;
+		element.append(view);
 	}
 
-	define('my-counter', Counter);
+	defineElement('my-counter', Counter);
 
 	document.body.append(Counter());
 </script>
 
 <style>
-	@import './css/index.css';
+	@import '/assets/index.css';
 </style>
 
 <my-counter></my-counter>
