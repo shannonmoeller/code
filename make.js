@@ -1,7 +1,7 @@
 /* eslint-env node */
 import { readdir, writeFile } from 'fs/promises';
 import { join } from 'path';
-import { html as txt } from './public/html/v1.0.0/html.js';
+import { html } from './public/html/v1.0.0/html.js';
 
 const { compare } = new Intl.Collator('en', { numeric: true });
 const ignoredPaths = ['assets', 'demo', 'index.html'];
@@ -54,7 +54,7 @@ async function dirToObject(dir) {
 }
 
 function renderPage(children) {
-	return txt`
+	return html`
 		<!DOCTYPE html>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -73,7 +73,7 @@ function renderPage(children) {
 }
 
 function renderTree(children) {
-	return txt`
+	return html`
 		<ol class="tree">
 			${children.map((child) =>
 				child.type === 'directory' ? renderDirectory(child) : renderFile(child)
@@ -83,7 +83,7 @@ function renderTree(children) {
 }
 
 function renderDirectory(dir) {
-	return txt`
+	return html`
 		<li class="tree-dir">
 			<details class="tree-dir" data-path="${dir.path}">
 				<summary>${dir.name}/</summary>
@@ -96,10 +96,10 @@ function renderDirectory(dir) {
 function renderFile(file) {
 	const isHtml = file.path.endsWith('.html');
 
-	return txt`
+	return html`
 		<li class="tree-file">
 			<a href="${file.path}">${file.name}</a>
-			${isHtml && txt`<a href="/demo/#!/${file.path}" title="demo">◧</a>`}
+			${isHtml && html`<a href="/demo/#!/${file.path}" title="demo">◧</a>`}
 		</li>
 	`;
 }
