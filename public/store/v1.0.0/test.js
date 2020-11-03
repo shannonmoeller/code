@@ -50,6 +50,32 @@ test('store.subscribe(fn)', async (t) => {
 		++count;
 	});
 
+	t.equal(count, 0);
+
+	a.set(1);
+
+	t.equal(count, 1);
+
+	a.set(2);
+
+	t.equal(count, 2);
+	t.equal(a.get(), 2);
+});
+
+test('store.subscribe(fn, options)', async (t) => {
+	const a = createStore(0);
+	let count = 0;
+
+	a.subscribe(
+		(x) => {
+			t.equal(a.get(), x);
+			++count;
+		},
+		{
+			immediate: true,
+		}
+	);
+
 	t.equal(count, 1);
 
 	a.set(1);
@@ -71,15 +97,15 @@ test('store.unsubscribe()', async (t) => {
 		++count;
 	});
 
-	t.equal(count, 1);
+	t.equal(count, 0);
 
 	a.set(1);
 
-	t.equal(count, 2);
+	t.equal(count, 1);
 
 	unsubscribe();
 	a.set(2);
 
-	t.equal(count, 2);
+	t.equal(count, 1);
 	t.equal(a.get(), 2);
 });
