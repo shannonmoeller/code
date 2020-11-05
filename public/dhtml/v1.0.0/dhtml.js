@@ -1,3 +1,4 @@
+export * from './src/clone.js';
 export * from './src/define.js';
 export * from './src/refs.js';
 export * from './src/repeat.js';

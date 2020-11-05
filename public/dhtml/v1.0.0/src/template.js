@@ -1,9 +1,5 @@
 const fragmentCache = new WeakMap();
 
-export function clone(id) {
-	return document.getElementById(id).content.cloneNode(true);
-}
-
 export function createFragment(strings) {
 	if (fragmentCache.has(strings)) {
 		return fragmentCache.get(strings);

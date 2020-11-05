@@ -1,4 +1,4 @@
-import { constrainBall, constrainChain, getDistance } from './constrain.js';
+import { constrainBall, constrainChain, getDistance } from './particles.js';
 
 const EMPTY = 0;
 const TOP_LEFT = 1;
