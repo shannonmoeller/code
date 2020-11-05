@@ -46,6 +46,10 @@ export function createTickLoop(options) {
 	}
 
 	return {
+		get isPlaying() {
+			return isPlaying;
+		},
+
 		start() {
 			isPlaying = true;
 			prev = performance.now();
@@ -83,6 +87,10 @@ export function createTimeLoop(options) {
 	}
 
 	return {
+		get isPlaying() {
+			return isPlaying;
+		},
+
 		start() {
 			isPlaying = true;
 			prev = performance.now();
