@@ -11,16 +11,16 @@ export function createTickLoop(options) {
 	let isPlaying = false;
 	let prev = null;
 
-	function handleFrame(next) {
+	function handleFrame(now) {
 		if (!isPlaying) {
 			return;
 		}
 
-		let delta = next - prev;
+		let delta = now - prev;
 		let ticks = Math.floor(delta / frameRate);
 
 		if (ticks > panicTicks) {
-			prev = next - frameRate;
+			prev = now - frameRate;
 			ticks = 1;
 		}
 
@@ -33,7 +33,7 @@ export function createTickLoop(options) {
 
 			if (update) {
 				while (ticks--) {
-					update();
+					update({ now, prev, delta });
 				}
 			}
 
@@ -67,16 +67,16 @@ export function createTimeLoop(options) {
 	let isPlaying = false;
 	let prev = null;
 
-	function handleFrame(next) {
+	function handleFrame(now) {
 		if (!isPlaying) {
 			return;
 		}
 
-		let delta = next - prev;
-		prev = next;
+		let delta = now - prev;
+		prev = now;
 
 		if (update) {
-			update(delta);
+			update({ now, prev, delta });
 		}
 
 		if (render) {
