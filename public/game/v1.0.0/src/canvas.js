@@ -10,15 +10,19 @@ export function createViewport(ctx, camera) {
 	let { height, width } = ctx;
 	let { x = 0, y = 0, z = 1 } = camera;
 
-	let scale = Math.max(0, z);
-	let halfHeight = height / 2 / scale;
-	let halfWidth = width / 2 / scale;
+	let scale = Math.max(0.00001, z);
+	let scaledHeight = height / scale;
+	let scaledWidth = width / scale;
+	let halfHeight = scaledHeight / 2;
+	let halfWidth = scaledWidth / 2;
 
 	ctx.save();
 	ctx.scale(scale, scale);
 	ctx.translate(halfWidth - x, halfHeight - y);
 
 	return {
+		height: scaledHeight,
+		width: scaledWidth,
 		top: y - halfHeight,
 		bottom: y + halfHeight,
 		left: x - halfWidth,
