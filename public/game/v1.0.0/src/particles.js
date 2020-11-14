@@ -29,6 +29,82 @@ export function getDistance(a, b) {
 	return abDistance - abRadius;
 }
 
+export function findClosest(a, b, p) {
+	let { x: ax, y: ay } = a;
+	let { x: bx, y: by } = b;
+	let { x: px, y: py } = p;
+
+	const bax = bx - ax;
+	const bay = by - ay;
+
+	const denominator = bax * bax + bay * bay;
+
+	if (!denominator) {
+		return p;
+	}
+
+	const pax = px - ax;
+	const pay = py - ay;
+
+	const numerator = pax * bax + pay * bay;
+	const quotient = Math.max(0, Math.min(1, numerator / denominator));
+
+	return {
+		x: ax + bax * quotient,
+		y: ay + bay * quotient,
+	};
+}
+
+export function findIntersection(a, b, c, d) {
+	let { x: ax, y: ay } = a;
+	let { x: bx, y: by } = b;
+	let { x: cx, y: cy } = c;
+	let { x: dx, y: dy } = d;
+
+	const bax = bx - ax;
+	const bay = by - ay;
+	const dcx = dx - cx;
+	const dcy = dy - cy;
+
+	const denominator = dcy * bax - dcx * bay;
+
+	if (!denominator) {
+		return null;
+	}
+
+	const acx = ax - cx;
+	const acy = ay - cy;
+
+	const baNumerator = bax * acy - bay * acx;
+	const baQuotient = baNumerator / denominator;
+
+	if (baQuotient <= 0 || baQuotient >= 1) {
+		return null;
+	}
+
+	const dcNumerator = dcx * acy - dcy * acx;
+	const dcQuotient = dcNumerator / denominator;
+
+	if (dcQuotient <= 0 || dcQuotient >= 1) {
+		return null;
+	}
+
+	return {
+		x: ax + bax * dcQuotient,
+		y: ay + bay * dcQuotient,
+	};
+}
+
+export function findReflection(a, b, p) {
+	const { x: px, y: py } = p;
+	const { x: cx, y: cy } = findClosest(a, b, p);
+
+	return {
+		x: cx + (cx - px),
+		y: cy + (cy - py),
+	};
+}
+
 export function constrain(a, b, options = {}) {
 	let { x: ax, y: ay, mass: aMass = 1, radius: aRadius = 0 } = a;
 	let { x: bx, y: by, mass: bMass = 1, radius: bRadius = 0 } = b;
