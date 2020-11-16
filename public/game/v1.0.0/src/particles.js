@@ -119,7 +119,7 @@ export function findReflection(a, b, p) {
 export function constrain(a, b, options = {}) {
 	let { x: ax, y: ay, mass: aMass = 1, radius: aRadius = 0 } = a;
 	let { x: bx, y: by, mass: bMass = 1, radius: bRadius = 0 } = b;
-	let { length = 0, adjust } = options;
+	let { length = 0, strength = 1, adjust } = options;
 
 	if (isZero(aMass) && isZero(bMass)) {
 		return;
@@ -147,8 +147,8 @@ export function constrain(a, b, options = {}) {
 
 	let abMass = aMass + bMass;
 	let abScale = abDelta / (abDistance * abMass);
-	let aScale = abScale * aMass;
-	let bScale = abScale * bMass;
+	let aScale = abScale * aMass * strength;
+	let bScale = abScale * bMass * strength;
 
 	a.x -= xDelta * aScale;
 	a.y -= yDelta * aScale;
