@@ -1,0 +1,181 @@
+<!doctype html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width" />
+<title>particles - game</title>
+
+<script type="module">
+	import { createContext } from "../src/canvas.js";
+	import {
+		findClosest,
+		findIntersection,
+		findReflection,
+	} from "../src/particles.js";
+
+	const TAU = 2 * Math.PI;
+
+	function renderPoint(ctx, {x, y}) {
+		ctx.save();
+		ctx.beginPath();
+		ctx.arc(x, y, 5, 0, TAU);
+		ctx.fill();
+		ctx.restore();
+	}
+
+	function renderLine(ctx, a, b) {
+		const { x: ax, y: ay } = a;
+		const { x: bx, y: by } = b;
+
+		ctx.save();
+		ctx.beginPath();
+		ctx.moveTo(ax, ay);
+		ctx.lineTo(bx, by);
+		ctx.stroke();
+		ctx.restore();
+	}
+
+	function renderIntersection(ctx) {
+		const a = { x: 0, y: 60 };
+		const b = { x: 100, y: 10 };
+		const c = { x: 0, y: 0 };
+		const d = { x: 100, y: 100 };
+		const i = findIntersection(a, b, c, d);
+
+		ctx.save();
+
+		renderLine(ctx, a, b);
+
+		ctx.strokeStyle = "red";
+		renderLine(ctx, c, d);
+
+		if (i) {
+			ctx.fillStyle = "green";
+			renderPoint(ctx, i);
+		}
+
+		ctx.restore();
+	}
+
+	function renderClosestA(ctx) {
+		const a = { x: 80, y: 60 };
+		const b = { x: 30, y: 50 };
+		const p = { x: 10, y: 0 };
+		const c = findClosest(a, b, p);
+		const r = findReflection(a, b, p);
+
+		ctx.save();
+
+		renderLine(ctx, a, b);
+		renderPoint(ctx, p);
+
+		ctx.fillStyle = "red";
+		ctx.strokeStyle = "red";
+		renderLine(ctx, p, c);
+		renderPoint(ctx, c);
+
+		ctx.fillStyle = "green";
+		ctx.strokeStyle = "green";
+		renderPoint(ctx, c);
+
+		ctx.restore();
+	}
+
+	function renderClosestB(ctx) {
+		const a = { x: 80, y: 60 };
+		const b = { x: 30, y: 50 };
+		const p = { x: 65, y: 0 };
+		const c = findClosest(a, b, p);
+		const r = findReflection(a, b, p);
+
+		ctx.save();
+
+		renderLine(ctx, a, b);
+		renderPoint(ctx, p);
+
+		ctx.fillStyle = "red";
+		ctx.strokeStyle = "red";
+		renderLine(ctx, p, c);
+		renderPoint(ctx, c);
+
+		ctx.fillStyle = "green";
+		ctx.strokeStyle = "green";
+		renderPoint(ctx, c);
+
+		ctx.restore();
+	}
+
+	function renderClosestC(ctx) {
+		const a = { x: 80, y: 60 };
+		const b = { x: 30, y: 50 };
+		const p = { x: 120, y: 0 };
+		const c = findClosest(a, b, p);
+		const r = findReflection(a, b, p);
+
+		ctx.save();
+
+		renderLine(ctx, a, b);
+		renderPoint(ctx, p);
+
+		ctx.fillStyle = "red";
+		ctx.strokeStyle = "red";
+		renderLine(ctx, p, c);
+		renderPoint(ctx, c);
+
+		ctx.fillStyle = "green";
+		ctx.strokeStyle = "green";
+		renderPoint(ctx, c);
+
+		ctx.restore();
+	}
+
+	function renderReflection(ctx) {
+		const a = { x: 0, y: 60 };
+		const b = { x: 100, y: 10 };
+		const p = { x: 20, y: 0 };
+		const c = findClosest(a, b, p);
+		const r = findReflection(a, b, p);
+
+		ctx.save();
+
+		renderLine(ctx, a, b);
+		renderPoint(ctx, p);
+
+		ctx.fillStyle = "red";
+		ctx.strokeStyle = "red";
+		renderLine(ctx, p, c);
+		renderPoint(ctx, c);
+
+		ctx.fillStyle = "green";
+		ctx.strokeStyle = "green";
+		renderLine(ctx, c, r);
+		renderPoint(ctx, r);
+
+		ctx.restore();
+	}
+
+	function Test(render) {
+		const canvas = document.createElement("canvas");
+		document.body.append(canvas);
+
+		const context = createContext(canvas);
+		context.translate(10, 10);
+		render(context);
+	}
+
+	Test(renderIntersection);
+	Test(renderClosestA);
+	Test(renderClosestB);
+	Test(renderClosestC);
+	Test(renderReflection);
+</script>
+
+<style>
+	@import '/assets/index.css';
+
+	canvas {
+		float: left;
+		margin: 10px;
+		height: 150px;
+		width: 150px;
+		border: 1px solid black;
+	}
+</style>

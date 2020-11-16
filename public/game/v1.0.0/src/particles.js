@@ -1,6 +1,18 @@
 export const PRECISION = 1e-6;
 export const HALF_PRECISION = PRECISION / 2;
 
+function get(obj, key) {
+	if (!obj.has(key)) {
+		obj.set(key, new Set());
+	}
+
+	return obj.get(key);
+}
+
+function set(obj, key, value) {
+	get(obj, key).add(value);
+}
+
 export function imprecision() {
 	return Math.random() * PRECISION - HALF_PRECISION;
 }
@@ -24,9 +36,8 @@ export function getDistance(a, b) {
 	let xDelta = ax - bx;
 	let yDelta = ay - by;
 	let abDistance = Math.hypot(xDelta, yDelta);
-	let abRadius = aRadius + bRadius;
 
-	return abDistance - abRadius;
+	return abDistance - aRadius - bRadius;
 }
 
 export function findClosest(a, b, p) {
@@ -108,7 +119,7 @@ export function findReflection(a, b, p) {
 export function constrain(a, b, options = {}) {
 	let { x: ax, y: ay, mass: aMass = 1, radius: aRadius = 0 } = a;
 	let { x: bx, y: by, mass: bMass = 1, radius: bRadius = 0 } = b;
-	let { length = 0, strength = 1, isResolved } = options;
+	let { length = 0, adjust } = options;
 
 	if (isZero(aMass) && isZero(bMass)) {
 		return;
@@ -124,17 +135,20 @@ export function constrain(a, b, options = {}) {
 	let xDelta = ax - bx;
 	let yDelta = ay - by;
 	let abDistance = Math.hypot(xDelta, yDelta);
-	let abRadius = length + aRadius + bRadius;
-	let abDelta = abDistance - abRadius;
+	let abDelta = abDistance - aRadius - bRadius - length;
 
-	if (isResolved && isResolved(abDelta)) {
+	if (adjust) {
+		abDelta = adjust(abDelta);
+	}
+
+	if (!abDelta) {
 		return;
 	}
 
 	let abMass = aMass + bMass;
 	let abScale = abDelta / (abDistance * abMass);
-	let aScale = abScale * aMass * strength;
-	let bScale = abScale * bMass * strength;
+	let aScale = abScale * aMass;
+	let bScale = abScale * bMass;
 
 	a.x -= xDelta * aScale;
 	a.y -= yDelta * aScale;
@@ -188,18 +202,6 @@ export function constrainAll(particles, options = {}) {
 	}
 }
 
-function get(obj, key) {
-	if (!obj.has(key)) {
-		obj.set(key, new Set());
-	}
-
-	return obj.get(key);
-}
-
-function set(obj, key, value) {
-	get(obj, key).add(value);
-}
-
 export function constrainSeries(particles, options) {
 	let max = particles.length - 1;
 
@@ -211,26 +213,38 @@ export function constrainSeries(particles, options) {
 	}
 }
 
+function adjustBall(delta) {
+	return isMoreThanZero(delta) ? 0 : delta;
+}
+
 export function constrainBall(a, b, options) {
-	constrain(a, b, { isResolved: isMoreThanZero, ...options });
+	constrain(a, b, { adjust: adjustBall, ...options });
 }
 
 export function constrainBalls(particles, options) {
-	constrainAll(particles, { isResolved: isMoreThanZero, ...options });
+	constrainAll(particles, { adjust: adjustBall, ...options });
+}
+
+function adjustChain(delta) {
+	return isLessThanZero(delta) ? 0 : delta;
 }
 
 export function constrainChain(a, b, options) {
-	constrain(a, b, { isResolved: isLessThanZero, ...options });
+	constrain(a, b, { adjust: adjustChain, ...options });
 }
 
 export function constrainChains(particles, options) {
-	constrainSeries(particles, { isResolved: isLessThanZero, ...options });
+	constrainSeries(particles, { adjust: adjustChain, ...options });
+}
+
+function adjustStick(delta) {
+	return isZero(delta) ? 0 : delta;
 }
 
 export function constrainStick(a, b, options) {
-	constrain(a, b, { isResolved: isZero, ...options });
+	constrain(a, b, { adjust: adjustStick, ...options });
 }
 
 export function constrainSticks(particles, options) {
-	constrainSeries(particles, { isResolved: isZero, ...options });
+	constrainSeries(particles, { adjust: adjustStick, ...options });
 }
