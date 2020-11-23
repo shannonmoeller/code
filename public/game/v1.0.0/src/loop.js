@@ -51,13 +51,17 @@ export function createTickLoop(options) {
 		},
 
 		start() {
-			isPlaying = true;
-			prev = performance.now();
-			requestAnimationFrame(handleFrame);
+			if (!isPlaying) {
+				isPlaying = true;
+				prev = performance.now();
+				requestAnimationFrame(handleFrame);
+			}
 		},
 
 		stop() {
-			isPlaying = false;
+			if (isPlaying) {
+				isPlaying = false;
+			}
 		},
 	};
 }

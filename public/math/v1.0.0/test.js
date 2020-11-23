@@ -1,6 +1,6 @@
 import { test } from '/test/v1.0.0/test.js';
 
-import { clamp, lerp, map, norm, round } from './math.js';
+import { clamp, lerp, map, norm, round, createRandom } from './math.js';
 
 test('-- math.js --');
 
@@ -66,4 +66,35 @@ test('round(number, ?number)', async (t) => {
 
 	// 0.8999999999999999 because IEEE 754
 	t.equal(round(1, 0.3), 0.3 * 3);
+});
+
+test('createRandom(number)', async (t) => {
+	const a = createRandom(1);
+	const a1 = a();
+	const a2 = a();
+
+	t.ok(a1 >= 0 && a1 < 1);
+	t.ok(a2 >= 0 && a2 < 1);
+	t.notEqual(a1, a2);
+
+	const b = createRandom(1);
+	const b1 = b();
+	const b2 = b();
+
+	t.ok(b1 >= 0 && b1 < 1);
+	t.ok(b2 >= 0 && b2 < 1);
+	t.notEqual(b1, b2);
+
+	const c = createRandom(2);
+	const c1 = c();
+	const c2 = c();
+
+	t.ok(c1 >= 0 && c1 < 1);
+	t.ok(c2 >= 0 && c2 < 1);
+	t.notEqual(c1, c2);
+
+	t.equal(a1, b1);
+	t.equal(a2, b2);
+	t.notEqual(a1, c1);
+	t.notEqual(a2, c2);
 });
