@@ -29,11 +29,11 @@ export function createTickLoop(options) {
 		}
 
 		if (ticks > 0) {
-			prev += ticks * frameRate;
-
 			if (update) {
 				while (ticks--) {
-					update({ now, prev, delta });
+					update({ now, prev, delta: frameRate });
+					now += frameRate;
+					prev += frameRate;
 				}
 			}
 
