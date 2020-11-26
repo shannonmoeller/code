@@ -16,10 +16,6 @@ export function createViewport(ctx, camera) {
 	let halfScaledHeight = scaledHeight / 2;
 	let halfScaledWidth = scaledWidth / 2;
 
-	ctx.save();
-	ctx.scale(scale, scale);
-	ctx.translate(halfScaledWidth - x, halfScaledHeight - y);
-
 	return {
 		height: scaledHeight,
 		width: scaledWidth,
@@ -28,10 +24,14 @@ export function createViewport(ctx, camera) {
 		left: x - halfScaledWidth,
 		right: x + halfScaledWidth,
 
+		apply() {
+			ctx.save();
+			ctx.scale(scale, scale);
+			ctx.translate(halfScaledWidth - x, halfScaledHeight - y);
+		},
+
 		restore() {
 			ctx.restore();
-
-			return ctx;
 		},
 	};
 }
