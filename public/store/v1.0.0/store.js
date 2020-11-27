@@ -17,9 +17,11 @@ export function createStore(state) {
 		},
 
 		subscribe(listener, options = {}) {
+			const { immediate = true } = options;
+
 			listeners.add(listener);
 
-			if (options.immediate) {
+			if (immediate) {
 				listener(state);
 			}
 
