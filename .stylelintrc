@@ -1,5 +1,3 @@
 {
-  "rules": {
-    "property-no-unknown": true
-  }
+  "extends": "stylelint-config-recommended"
 }

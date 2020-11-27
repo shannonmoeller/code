@@ -1,6 +1,4 @@
 {
-  "arrowParens": "always",
   "quoteProps": "consistent",
-  "singleQuote": true,
-  "trailingComma": "es5"
+  "singleQuote": true
 }
