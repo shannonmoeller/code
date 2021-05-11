@@ -22,4 +22,7 @@ export function createTemplate(strings) {
 	return () => content.cloneNode(true);
 }
 
-export { createTemplate as html, createTemplate as svg };
+export {
+	createTemplate as html,
+	createTemplate as svg,
+};

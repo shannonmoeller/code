@@ -7,7 +7,6 @@ body {
 	color: var(--foreground);
 	font: 300 1.6rem/1.6 sans-serif;
 	margin: 3em;
-	overflow-x: hidden;
 }
 
 h1,

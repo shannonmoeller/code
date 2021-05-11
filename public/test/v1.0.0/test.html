@@ -21,6 +21,8 @@
 	test('fail', (t) => {
 		t.ok(false);
 		t.ok(false, 'dang');
+		t.equal(true, false);
+		t.equal([1], [2]);
 		t.equal(
 			{foo: 1, bar: 2},
 			{foo: 3, baz: 2},

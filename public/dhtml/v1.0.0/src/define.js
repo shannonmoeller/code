@@ -1,35 +1,53 @@
-const isInitialized = Symbol('initialized');
+const connection = Symbol('connection');
+const isInitialized = Symbol('isInitialized');
 const events = ['connect', 'disconnect', 'adopt', 'attributechange'];
 
 export function defineElement(name, init, options = {}) {
-	let { attributes = {}, ...rest } = options;
+	let { attributes = {}, base = HTMLElement, ...rest } = options;
 
-	class CustomElement extends HTMLElement {
+	class CustomElement extends base {
 		static get observedAttributes() {
 			return Object.keys(attributes).map(hyphenate);
 		}
 
 		constructor() {
 			super();
+
 			defineAttributes(this, attributes);
 			defineEvents(this, events);
 		}
 
-		async connectedCallback() {
+		connectedCallback() {
 			if (!this.isConnected) {
 				return;
 			}
 
+			const controller = new AbortController();
+			const { signal } = controller;
+
+			this[connection]?.abort();
+			this[connection] = controller;
+
 			if (!this[isInitialized]) {
 				this[isInitialized] = true;
-				await init(this);
+				init(this, { signal });
 			}
 
-			emit(this, 'connect');
+			emit(this, 'connect', { signal });
 		}
 
 		disconnectedCallback() {
-			emit(this, 'disconnect');
+			if (this.isConnected) {
+				return;
+			}
+
+			const controller = this[connection];
+			const { signal } = controller;
+
+			controller.abort();
+			this[connection] = null;
+
+			emit(this, 'disconnect', { signal });
 		}
 
 		adoptedCallback() {

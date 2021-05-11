@@ -65,76 +65,78 @@ function isDeepEqualObject(a, b) {
 	return aKeys.every((key) => isDeepEqual(a[key], b[key]));
 }
 
-export class Assert {
-	constructor() {
-		this.count = 0;
-		this.passed = 0;
-		this.failed = 0;
-	}
+export function createAssert() {
+	const assert = {
+		count: 0,
+		passed: 0,
+		failed: 0,
 
-	comment(message) {
-		const formatted = String(message)
-			.split('\n')
-			.join('\n# ');
+		comment(message) {
+			const formatted = String(message)
+				.split('\n')
+				.join('\n# ');
 
-		console.log(`# ${formatted}`);
-	}
+			console.log(`# ${formatted}`);
+		},
 
-	ok(value, message = 'should be ok', ...rest) {
-		if (value) {
-			this.passed += 1;
-			console.log(`ok ${(this.count += 1)} - ${message}`);
-		} else {
-			this.failed += 1;
-			console.log(`not ok ${(this.count += 1)} - ${message}`);
-
-			if (rest.length) {
-				console.table(...rest);
-			}
-		}
-	}
-
-	equal(actual, expected, message = 'should be equal') {
-		this.ok(Object.is(actual, expected), message, {
-			actual,
-			expected,
-		});
-	}
-
-	notEqual(actual, expected, message = 'should not be equal') {
-		this.ok(!Object.is(actual, expected), message, {
-			actual,
-			expected,
-		});
-	}
-
-	deepEqual(actual, expected, message = 'should be deeply equal') {
-		this.ok(isDeepEqual(actual, expected), message, {
-			actual,
-			expected,
-		});
-	}
-
-	notDeepEqual(actual, expected, message = 'should not be deeply equal') {
-		this.ok(!isDeepEqual(actual, expected), message, {
-			actual,
-			expected,
-		});
-	}
-
-	async throws(fn, expected, message = 'should throw') {
-		try {
-			await fn();
-			this.ok(false, message);
-		} catch (e) {
-			if (expected instanceof RegExp) {
-				this.ok(e.message.match(expected), message, {
-					actual: e.message,
-					expected: String(expected),
-				});
+		ok(value, message = 'should be ok', ...rest) {
+			if (value) {
+				assert.passed += 1;
+				console.log(`ok ${(assert.count += 1)} - ${message}`);
 			} else {
-				this.equal(e.message, expected, message);
+				assert.failed += 1;
+				console.log(`not ok ${(assert.count += 1)} - ${message}`);
+
+				if (rest.length) {
+					console.table(...rest);
+				}
 			}
-		}
-	}
+		},
+
+		equal(actual, expected, message = 'should be equal') {
+			assert.ok(Object.is(actual, expected), message, {
+				actual,
+				expected,
+			});
+		},
+
+		notEqual(actual, expected, message = 'should not be equal') {
+			assert.ok(!Object.is(actual, expected), message, {
+				actual,
+				expected,
+			});
+		},
+
+		deepEqual(actual, expected, message = 'should be deeply equal') {
+			assert.ok(isDeepEqual(actual, expected), message, {
+				actual,
+				expected,
+			});
+		},
+
+		notDeepEqual(actual, expected, message = 'should not be deeply equal') {
+			assert.ok(!isDeepEqual(actual, expected), message, {
+				actual,
+				expected,
+			});
+		},
+
+		async throws(fn, expected, message = 'should throw') {
+			try {
+				await fn();
+				assert.ok(false, message);
+			} catch (e) {
+				if (expected instanceof RegExp) {
+					assert.ok(e.message.match(expected), message, {
+						actual: e.message,
+						expected: String(expected),
+					});
+				} else {
+					assert.equal(e.message, expected, message);
+				}
+			}
+		},
+	};
+
+	return assert;
 }
