@@ -39,4 +39,4 @@ export async function run() {
 	console.log(`# time=${(endTime - startTime).toFixed(2)}ms`);
 }
 
-setTimeout(run, 0);
+setTimeout(run);

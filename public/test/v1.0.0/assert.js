@@ -14,23 +14,17 @@ function isDeepEqual(a, b) {
 		return false;
 	}
 
-	if (typeOfA === 'Date') {
-		return Number(a) === Number(b);
+	if (typeOfA.endsWith('Array')) {
+		return isDeepEqualArray(a, b);
 	}
 
-	if (typeOfA.endsWith('Array') || typeOfA === 'Set') {
-		return isDeepEqualArray(Array.from(a), Array.from(b));
+	switch (typeOfA) {
+		case 'Date': return isDeepEqualDate(a, b);
+		case 'Map': return isDeepEqualMap(a, b);
+		case 'Object': return isDeepEqualObject(a, b);
+		case 'Set': return isDeepEqualSet(a, b);
+		default: return false;
 	}
-
-	if (typeOfA === 'Map') {
-		return isDeepEqualMap(a, b);
-	}
-
-	if (typeOfA === 'Object') {
-		return isDeepEqualObject(a, b);
-	}
-
-	return false;
 }
 
 function isDeepEqualArray(a, b) {
@@ -41,28 +35,32 @@ function isDeepEqualArray(a, b) {
 	return a.every((x, i) => isDeepEqual(a[i], b[i]));
 }
 
-function isDeepEqualMap(a, b) {
-	const aEntries = a.entries();
-	const bEntries = b.entries();
-	const aKeys = aEntries.map((x) => x[0]).sort();
-	const bKeys = bEntries.map((x) => x[0]).sort();
+function isDeepEqualDate(a, b) {
+	return Number(a) === Number(b);
+}
 
-	if (aKeys.join('★') !== bKeys.join('★')) {
+function isDeepEqualMap(a, b) {
+	if (a.size !== b.size) {
 		return false;
 	}
 
-	return aKeys.every((key) => isDeepEqual(a.get(key), b.get(key)));
+	return Array.from(a.keys()).every((key) => isDeepEqual(a.get(key), b.get(key)));
 }
 
 function isDeepEqualObject(a, b) {
-	const aKeys = Object.keys(a).sort();
-	const bKeys = Object.keys(b).sort();
+	if (Object.keys(a).length !== Object.keys(b).length) {
+		return false
+	}
 
-	if (aKeys.join('★') !== bKeys.join('★')) {
+	return Object.keys(a).every((key) => isDeepEqual(a[key], b[key]));
+}
+
+function isDeepEqualSet(a, b) {
+	if (a.size !== b.size) {
 		return false;
 	}
 
-	return aKeys.every((key) => isDeepEqual(a[key], b[key]));
+	return isDeepEqualArray(Array.from(a), Array.from(b));
 }
 
 export function createAssert() {
@@ -126,7 +124,9 @@ export function createAssert() {
 				await fn();
 				assert.ok(false, message);
 			} catch (e) {
-				if (expected instanceof RegExp) {
+				if (expected == null) {
+					assert.ok(true, message);
+				} else if (expected instanceof RegExp) {
 					assert.ok(e.message.match(expected), message, {
 						actual: e.message,
 						expected: String(expected),

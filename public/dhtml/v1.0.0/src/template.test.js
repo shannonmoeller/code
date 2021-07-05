@@ -3,7 +3,7 @@ import { createFragment, html, svg } from './template.js';
 
 test('-- template.js --');
 
-test('createFragment()', async (t) => {
+test('createFragment()', (t) => {
 	const foo = () => createFragment`<span></span>`;
 	const a = foo();
 	const b = foo();
@@ -12,7 +12,7 @@ test('createFragment()', async (t) => {
 	t.equal(a.nodeType, Node.DOCUMENT_FRAGMENT_NODE);
 });
 
-test('html()', async (t) => {
+test('html()', (t) => {
 	// prettier-ignore
 	const template = html`<span></span>`;
 	const a = template();
@@ -29,7 +29,7 @@ test('html()', async (t) => {
 	t.equal(b.childNodes[0].tagName, 'SPAN');
 });
 
-test('svg()', async (t) => {
+test('svg()', (t) => {
 	const template = svg`<g></g>`;
 	const a = template();
 	const b = template();

@@ -4,7 +4,7 @@ import { isSafe, raw, encode, serialize, html } from './html.js';
 
 test('-- html.js --');
 
-test('should create safe strings', async (t) => {
+test('should create safe strings', (t) => {
 	t.ok(isSafe(html``));
 	t.ok(isSafe(raw('')));
 	t.ok(isSafe(raw(html``)));
@@ -35,7 +35,7 @@ test('should create safe strings', async (t) => {
 	);
 });
 
-test('should interpolate values', async (t) => {
+test('should interpolate values', (t) => {
 	const values = [
 		undefined,
 		null,
@@ -60,7 +60,7 @@ test('should interpolate values', async (t) => {
 	t.equal(String(actual), expected);
 });
 
-test('should encode unsafe strings', async (t) => {
+test('should encode unsafe strings', (t) => {
 	t.equal(
 		String(encode('<img src="/" onerror="alert(`hi`)" />&nbsp;')),
 		'&lt;img src=&quot;/&quot; onerror=&quot;alert(&#96;hi&#96;)&quot; /&gt;&amp;nbsp;',

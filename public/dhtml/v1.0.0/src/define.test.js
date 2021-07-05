@@ -10,14 +10,14 @@ import {
 
 test('-- define.js --');
 
-test('hyphenate(str)', async (t) => {
+test('hyphenate(str)', (t) => {
 	t.equal(hyphenate('foo'), 'foo');
 	t.equal(hyphenate('fooBar'), 'foo-bar');
 	t.equal(hyphenate('FooBar'), '-foo-bar');
 	t.equal(hyphenate('foo-bar'), 'foo-bar');
 });
 
-// test('normalizeAttribute([str, obj])', async (t) => {
+// test('normalizeAttribute([str, obj])', (t) => {
 // 	t.deepEqual(normalizeAttribute(['foo', {}]), {
 // 		name: 'foo',
 // 		attr: 'foo',
@@ -50,7 +50,7 @@ test('hyphenate(str)', async (t) => {
 // 	);
 // });
 //
-// test('reflectAttribute(obj)', async (t) => {
+// test('reflectAttribute(obj)', (t) => {
 // 	const node = document.createElement('div');
 //
 // 	reflectAttribute(node, {
@@ -80,7 +80,7 @@ test('hyphenate(str)', async (t) => {
 // 	t.deepEqual(node.getAttribute('bat-baz'), '{"baz":"bat"}');
 // });
 
-test('defineElement(str, fn[, obj])', async (t) => {
+test('defineElement(str, fn[, obj])', (t) => {
 	function FooBar(ref) {
 		t.equal(el, ref, 'same element');
 

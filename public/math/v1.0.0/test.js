@@ -4,7 +4,7 @@ import { clamp, lerp, map, norm, round, createRandom } from './math.js';
 
 test('-- math.js --');
 
-test('clamp(number, number, number)', async (t) => {
+test('clamp(number, number, number)', (t) => {
 	t.equal(clamp(-1, 0, 10), 0);
 	t.equal(clamp(0, 0, 10), 0);
 	t.equal(clamp(5, 0, 10), 5);
@@ -12,7 +12,7 @@ test('clamp(number, number, number)', async (t) => {
 	t.equal(clamp(11, 0, 10), 10);
 });
 
-test('lerp(number, number, number)', async (t) => {
+test('lerp(number, number, number)', (t) => {
 	t.equal(lerp(0, 0, 10), 0);
 	t.equal(lerp(0.3, 0, 10), 3);
 	t.equal(lerp(0.5, 0, 10), 5);
@@ -23,7 +23,7 @@ test('lerp(number, number, number)', async (t) => {
 	t.equal(lerp(0.5, 2, 4), 3);
 });
 
-test('map(number, number, number, number, number)', async (t) => {
+test('map(number, number, number, number, number)', (t) => {
 	t.equal(map(0, 0, 10, 0, 100), 0);
 	t.equal(map(3, 0, 10, 0, 100), 30);
 	t.equal(map(5, 0, 10, 0, 100), 50);
@@ -34,7 +34,7 @@ test('map(number, number, number, number, number)', async (t) => {
 	t.equal(map(0, -5, 5, 2, 4), 3);
 });
 
-test('norm(number, number, number)', async (t) => {
+test('norm(number, number, number)', (t) => {
 	t.equal(norm(0, 0, 10), 0);
 	t.equal(norm(3, 0, 10), 0.3);
 	t.equal(norm(5, 0, 10), 0.5);
@@ -45,7 +45,7 @@ test('norm(number, number, number)', async (t) => {
 	t.equal(norm(3, 2, 4), 0.5);
 });
 
-test('round(number, ?number)', async (t) => {
+test('round(number, ?number)', (t) => {
 	t.equal(round(0.2), 0);
 	t.equal(round(0.3), 0);
 	t.equal(round(0.5), 1);
@@ -68,7 +68,7 @@ test('round(number, ?number)', async (t) => {
 	t.equal(round(1, 0.3), 0.3 * 3);
 });
 
-test('createRandom(number)', async (t) => {
+test('createRandom(number)', (t) => {
 	const a = createRandom(1);
 	const a1 = a();
 	const a2 = a();

@@ -3,7 +3,7 @@ import { refs } from './refs.js';
 
 test('-- refs.js --');
 
-test('refs(el)', async (t) => {
+test('refs(el)', (t) => {
 	const div = document.createElement('div');
 
 	div.innerHTML = `

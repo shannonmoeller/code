@@ -3,7 +3,7 @@ import { clone } from './clone.js';
 
 test('-- clone.js --');
 
-test('clone()', async (t) => {
+test('clone()', (t) => {
 	const template = document.createElement('template');
 
 	template.id = 'foo';

@@ -3,7 +3,7 @@ import { createStore } from './store.js';
 
 test('-- store.js --');
 
-test('createStore(value)', async (t) => {
+test('createStore(value)', (t) => {
 	const store = createStore();
 
 	t.equal(store.hasOwnProperty('get'), true);
@@ -11,7 +11,7 @@ test('createStore(value)', async (t) => {
 	t.equal(store.hasOwnProperty('subscribe'), true);
 });
 
-test('store.get()', async (t) => {
+test('store.get()', (t) => {
 	const a = createStore(0);
 	const b = createStore({});
 
@@ -19,7 +19,7 @@ test('store.get()', async (t) => {
 	t.deepEqual(b.get(), {});
 });
 
-test('store.set(value)', async (t) => {
+test('store.set(value)', (t) => {
 	const a = createStore(0);
 	const b = createStore({ foo: 1 });
 
@@ -30,7 +30,7 @@ test('store.set(value)', async (t) => {
 	t.deepEqual(b.get(), { foo: 2 });
 });
 
-test('store.set(fn)', async (t) => {
+test('store.set(fn)', (t) => {
 	const a = createStore(0);
 	const b = createStore({ foo: 1 });
 
@@ -41,28 +41,28 @@ test('store.set(fn)', async (t) => {
 	t.deepEqual(b.get(), { foo: 1, bar: 2 });
 });
 
-test('store.subscribe(fn)', async (t) => {
+test('store.subscribe(fn)', (t) => {
 	const a = createStore(0);
 	let count = 0;
 
 	a.subscribe((x) => {
 		t.equal(a.get(), x);
-		++count;
+		count++;
 	});
-
-	t.equal(count, 0);
-
-	a.set(1);
 
 	t.equal(count, 1);
 
-	a.set(2);
+	a.set(1);
 
 	t.equal(count, 2);
+
+	a.set(2);
+
+	t.equal(count, 3);
 	t.equal(a.get(), 2);
 });
 
-test('store.subscribe(fn, options)', async (t) => {
+test('store.subscribe(fn, options)', (t) => {
 	const a = createStore(0);
 	let count = 0;
 
@@ -88,7 +88,7 @@ test('store.subscribe(fn, options)', async (t) => {
 	t.equal(a.get(), 2);
 });
 
-test('store.unsubscribe()', async (t) => {
+test('store.unsubscribe()', (t) => {
 	const a = createStore(0);
 	let count = 0;
 
@@ -97,15 +97,15 @@ test('store.unsubscribe()', async (t) => {
 		++count;
 	});
 
-	t.equal(count, 0);
+	t.equal(count, 1);
 
 	a.set(1);
 
-	t.equal(count, 1);
+	t.equal(count, 2);
 
 	unsubscribe();
 	a.set(2);
 
-	t.equal(count, 1);
+	t.equal(count, 2);
 	t.equal(a.get(), 2);
 });
