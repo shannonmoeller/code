@@ -1,4 +1,25 @@
 {
   "private": true,
-  "type": "module"
+  "type": "module",
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "env": {
+      "browser": true,
+      "es6": true,
+      "node": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2020,
+      "sourceType": "module"
+    },
+    "rules": {
+      "no-sparse-arrays": "off"
+    }
+  },
+  "stylelint": {
+    "extends": "stylelint-config-recommended"
+  },
+  "prettier": {
+    "singleQuote": true
+  }
 }

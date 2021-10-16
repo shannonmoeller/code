@@ -6,10 +6,19 @@ import { html } from './public/html/v1.0.0/html.js';
 const { compare } = new Intl.Collator('en', { numeric: true });
 const ignoredPaths = ['assets', 'demo', 'index.html'];
 
-function isIgnored(path) {
-	return ignoredPaths.some((x) => {
-		return path.startsWith(x);
-	});
+async function main() {
+	const children = [
+		...(await dirToObject('.')),
+		{
+			type: 'file',
+			name: 'GitHub',
+			path: 'https://github.com/shannonmoeller/code',
+		},
+	];
+
+	const html = String(renderPage(children)).trim();
+
+	await writeFile('public/index.html', html);
 }
 
 async function dirToObject(dir) {
@@ -51,6 +60,12 @@ async function dirToObject(dir) {
 	}
 
 	return [...dirs, ...files];
+}
+
+function isIgnored(path) {
+	return ignoredPaths.some((x) => {
+		return path.startsWith(x);
+	});
 }
 
 function renderPage(children) {
@@ -102,21 +117,6 @@ function renderFile(file) {
 			${isHtml && html`<a href="/demo/#!/${file.path}" title="demo">◧</a>`}
 		</li>
 	`;
-}
-
-async function main() {
-	const children = [
-		...(await dirToObject('.')),
-		{
-			type: 'file',
-			name: 'GitHub',
-			path: 'https://github.com/shannonmoeller/code',
-		},
-	];
-
-	const html = String(renderPage(children)).trim();
-
-	await writeFile('public/index.html', html);
 }
 
 main().catch(console.error);
