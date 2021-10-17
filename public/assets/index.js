@@ -1,5 +1,5 @@
 const initialPaths = localStorage.getItem('paths') || '';
-const paths = new Set(initialPaths.split(','));
+const paths = new Set(initialPaths.split(',').filter(Boolean));
 
 document.querySelectorAll('details').forEach((details) => {
 	const { path } = details.dataset;
