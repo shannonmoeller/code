@@ -1,4 +1,4 @@
-import { test } from '/test/v1.0.0/test.js';
+import { test } from '/test/test.js';
 import { createFragment, html, svg } from './template.js';
 
 test('-- template.js --');

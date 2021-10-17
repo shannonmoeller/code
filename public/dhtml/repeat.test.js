@@ -1,4 +1,4 @@
-import { test } from '/test/v1.0.0/test.js';
+import { test } from '/test/test.js';
 import { repeat } from './repeat.js';
 
 test('-- repeat.js --');
