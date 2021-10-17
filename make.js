@@ -1,7 +1,7 @@
 /* eslint-env node */
 import { readdir, writeFile } from 'fs/promises';
 import { join } from 'path';
-import { html } from './public/html/v1.0.0/html.js';
+import { html } from './public/html/html.js';
 
 const { compare } = new Intl.Collator('en', { numeric: true });
 const ignoredPaths = ['assets', 'demo', 'index.html'];
@@ -70,7 +70,7 @@ function isIgnored(path) {
 
 function renderPage(children) {
 	return html`
-		<!DOCTYPE html>
+		<!doctype html>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<title>code</title>
