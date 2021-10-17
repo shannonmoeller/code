@@ -70,7 +70,7 @@ function isIgnored(path) {
 
 function renderPage(children) {
 	return html`
-		<!doctype html>
+		<!DOCTYPE html>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<title>code</title>
@@ -114,7 +114,7 @@ function renderFile(file) {
 	return html`
 		<li class="tree-file">
 			<a href="${file.path}">${file.name}</a>
-			${isHtml && html`<a href="/demo/#!/${file.path}" title="demo">◧</a>`}
+			${isHtml && html`<a href="/demo/#!/${file.path}">◧</a>`}
 		</li>
 	`;
 }

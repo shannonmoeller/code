@@ -1,6 +1,6 @@
 import { test } from '/test/test.js';
 
-import { isSafe, raw, encode, serialize, html } from './html.js';
+import { isSafe, raw, encode, html } from './html.js';
 
 test('-- html.js --');
 
@@ -80,9 +80,7 @@ test('should enforce type', async (t) => {
 
 	await t.throws(
 		() => {
-			html`
-				${() => {}}
-			`;
+			html` ${() => {}} `;
 		},
 		/function/,
 		'disallow functions'

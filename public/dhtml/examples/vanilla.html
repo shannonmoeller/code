@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width" />
 <title>vanilla</title>
@@ -88,7 +88,7 @@
 				items.add({
 					id: index++,
 					text: value,
-					done: false
+					done: false,
 				});
 
 				root.update();
@@ -117,8 +117,8 @@
 			repeat({
 				items,
 				parent: list,
-				create: item => TodoItem(item, scope),
-				update: (el, item) => el.update(item)
+				create: (item) => TodoItem(item, scope),
+				update: (el, item) => el.update(item),
 			});
 		};
 
@@ -129,7 +129,7 @@
 			input.focus();
 		};
 
-		reorder.onclick = event => {
+		reorder.onclick = (event) => {
 			scope.reorder();
 		};
 

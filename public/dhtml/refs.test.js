@@ -15,8 +15,10 @@ test('refs(el)', (t) => {
 
 	const [before, fooChild, barChild, after] = div.children;
 
+	t.ok(before);
 	t.equal(fooChild.hasAttribute('ref'), true, 'has ref');
 	t.equal(barChild.hasAttribute('ref'), true, 'has ref');
+	t.ok(after);
 
 	const { foo, bar } = refs(div);
 

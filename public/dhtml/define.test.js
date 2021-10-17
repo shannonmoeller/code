@@ -8,6 +8,8 @@ import {
 	emit,
 } from './define.js';
 
+const { isPrototypeOf } = Object.prototype;
+
 test('-- define.js --');
 
 test('hyphenate(str)', (t) => {
@@ -16,69 +18,6 @@ test('hyphenate(str)', (t) => {
 	t.equal(hyphenate('FooBar'), '-foo-bar');
 	t.equal(hyphenate('foo-bar'), 'foo-bar');
 });
-
-// test('normalizeAttribute([str, obj])', (t) => {
-// 	t.deepEqual(normalizeAttribute(['foo', {}]), {
-// 		name: 'foo',
-// 		attr: 'foo',
-// 		get: String,
-// 		set: String,
-// 	});
-//
-// 	t.deepEqual(normalizeAttribute(['fooBar', {}]), {
-// 		name: 'fooBar',
-// 		attr: 'foo-bar',
-// 		get: String,
-// 		set: String,
-// 	});
-//
-// 	t.deepEqual(
-// 		normalizeAttribute([
-// 			'fooBar',
-// 			{
-// 				attr: 'bar-foo',
-// 				get: JSON.parse,
-// 				set: JSON.stringify,
-// 			},
-// 		]),
-// 		{
-// 			name: 'fooBar',
-// 			attr: 'bar-foo',
-// 			get: JSON.parse,
-// 			set: JSON.stringify,
-// 		}
-// 	);
-// });
-//
-// test('reflectAttribute(obj)', (t) => {
-// 	const node = document.createElement('div');
-//
-// 	reflectAttribute(node, {
-// 		name: 'fooBar',
-// 		attr: 'bar-foo',
-// 		get: Boolean,
-// 		set: String,
-// 	});
-//
-// 	reflectAttribute(node, {
-// 		name: 'bazBat',
-// 		attr: 'bat-baz',
-// 		get: JSON.parse,
-// 		set: JSON.stringify,
-// 	});
-//
-// 	node.fooBar = true;
-// 	t.equal(node.fooBar, true);
-// 	t.equal(node.hasAttribute('bar-foo'), true);
-//
-// 	node.fooBar = false;
-// 	t.equal(node.fooBar, false);
-// 	t.equal(node.hasAttribute('bar-foo'), false);
-//
-// 	node.bazBat = { baz: 'bat' };
-// 	t.deepEqual(node.bazBat, { baz: 'bat' });
-// 	t.deepEqual(node.getAttribute('bat-baz'), '{"baz":"bat"}');
-// });
 
 test('defineElement(str, fn[, obj])', (t) => {
 	function FooBar(ref) {
@@ -95,7 +34,7 @@ test('defineElement(str, fn[, obj])', (t) => {
 		},
 	});
 
-	t.equal(HTMLElement.isPrototypeOf(FooBarElement), true, 'is class');
+	t.equal(isPrototypeOf.call(HTMLElement, FooBarElement), true, 'is class');
 
 	const el = document.createElement('foo-bar');
 
@@ -107,4 +46,33 @@ test('defineElement(str, fn[, obj])', (t) => {
 	t.equal(el.baz, true);
 
 	el.remove();
+});
+
+test('defineAttribute(el, str[, obj])', (t) => {
+	const el = document.createElement('div');
+
+	defineAttribute(el, 'baz', Boolean);
+
+	t.equal(el.getAttribute('baz'), null);
+	t.equal(el.baz, false);
+
+	el.baz = true;
+	t.equal(el.getAttribute('baz'), '');
+	t.equal(el.baz, true);
+});
+
+test('defineEvent(el, str)', async (t) => {
+	const el = document.createElement('div');
+
+	defineEvent(el, 'greet');
+
+	await new Promise((resolve) => {
+		el.ongreet = (event) => {
+			t.equal(event.type, 'greet');
+			t.equal(event.target, el);
+			resolve();
+		};
+
+		emit(el, 'greet');
+	});
 });

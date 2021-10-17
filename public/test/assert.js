@@ -19,11 +19,16 @@ function isDeepEqual(a, b) {
 	}
 
 	switch (typeOfA) {
-		case 'Date': return isDeepEqualDate(a, b);
-		case 'Map': return isDeepEqualMap(a, b);
-		case 'Object': return isDeepEqualObject(a, b);
-		case 'Set': return isDeepEqualSet(a, b);
-		default: return false;
+		case 'Date':
+			return isDeepEqualDate(a, b);
+		case 'Map':
+			return isDeepEqualMap(a, b);
+		case 'Object':
+			return isDeepEqualObject(a, b);
+		case 'Set':
+			return isDeepEqualSet(a, b);
+		default:
+			return false;
 	}
 }
 
@@ -44,12 +49,14 @@ function isDeepEqualMap(a, b) {
 		return false;
 	}
 
-	return Array.from(a.keys()).every((key) => isDeepEqual(a.get(key), b.get(key)));
+	return Array.from(a.keys()).every((key) =>
+		isDeepEqual(a.get(key), b.get(key))
+	);
 }
 
 function isDeepEqualObject(a, b) {
 	if (Object.keys(a).length !== Object.keys(b).length) {
-		return false
+		return false;
 	}
 
 	return Object.keys(a).every((key) => isDeepEqual(a[key], b[key]));
@@ -70,9 +77,7 @@ export function createAssert() {
 		failed: 0,
 
 		comment(message) {
-			const formatted = String(message)
-				.split('\n')
-				.join('\n# ');
+			const formatted = String(message).split('\n').join('\n# ');
 
 			console.log(`# ${formatted}`);
 		},

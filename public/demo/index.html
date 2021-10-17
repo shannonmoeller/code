@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width" />
 <title>demo - dhtml</title>
@@ -24,10 +24,7 @@
 	}
 
 	function onHashChange() {
-		const url = new URL(
-			location.hash.replace(/^#!\//, ''),
-			location.origin
-		);
+		const url = new URL(location.hash.replace(/^#!\//, ''), location.origin);
 
 		if (url.origin !== location.origin || url.pathname === '/') {
 			currentUrl = '';
@@ -36,8 +33,8 @@
 		}
 
 		fetch(url)
-			.then(response => response.text())
-			.then(content => {
+			.then((response) => response.text())
+			.then((content) => {
 				currentUrl = String(url);
 				editor.session.setValue(content);
 			});
@@ -78,4 +75,3 @@
 	<textarea class="demo-code" id="code"></textarea>
 	<iframe class="demo-preview" id="preview" srcdoc=""></iframe>
 </main>
-

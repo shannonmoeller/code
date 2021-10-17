@@ -1,11 +1,15 @@
-<!doctype html>
+<!DOCTYPE html>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width" />
 <title>particles - game</title>
 
 <script type="module">
-	import { createContext } from "../canvas.js";
-	import { findClosest, findIntersection, findReflection } from "../particles.js";
+	import { createContext } from '../canvas.js';
+	import {
+		findClosest,
+		findIntersection,
+		findReflection,
+	} from '../particles.js';
 
 	const TAU = 2 * Math.PI;
 
@@ -40,11 +44,11 @@
 
 		renderLine(ctx, a, b);
 
-		ctx.strokeStyle = "red";
+		ctx.strokeStyle = 'red';
 		renderLine(ctx, c, d);
 
 		if (i) {
-			ctx.fillStyle = "green";
+			ctx.fillStyle = 'green';
 			renderPoint(ctx, i);
 		}
 
@@ -63,13 +67,13 @@
 		renderLine(ctx, a, b);
 		renderPoint(ctx, p);
 
-		ctx.fillStyle = "red";
-		ctx.strokeStyle = "red";
+		ctx.fillStyle = 'red';
+		ctx.strokeStyle = 'red';
 		renderLine(ctx, p, c);
 		renderPoint(ctx, c);
 
-		ctx.fillStyle = "green";
-		ctx.strokeStyle = "green";
+		ctx.fillStyle = 'green';
+		ctx.strokeStyle = 'green';
 		renderPoint(ctx, c);
 
 		ctx.restore();
@@ -87,13 +91,13 @@
 		renderLine(ctx, a, b);
 		renderPoint(ctx, p);
 
-		ctx.fillStyle = "red";
-		ctx.strokeStyle = "red";
+		ctx.fillStyle = 'red';
+		ctx.strokeStyle = 'red';
 		renderLine(ctx, p, c);
 		renderPoint(ctx, c);
 
-		ctx.fillStyle = "green";
-		ctx.strokeStyle = "green";
+		ctx.fillStyle = 'green';
+		ctx.strokeStyle = 'green';
 		renderPoint(ctx, c);
 
 		ctx.restore();
@@ -111,13 +115,13 @@
 		renderLine(ctx, a, b);
 		renderPoint(ctx, p);
 
-		ctx.fillStyle = "red";
-		ctx.strokeStyle = "red";
+		ctx.fillStyle = 'red';
+		ctx.strokeStyle = 'red';
 		renderLine(ctx, p, c);
 		renderPoint(ctx, c);
 
-		ctx.fillStyle = "green";
-		ctx.strokeStyle = "green";
+		ctx.fillStyle = 'green';
+		ctx.strokeStyle = 'green';
 		renderPoint(ctx, c);
 
 		ctx.restore();
@@ -135,13 +139,13 @@
 		renderLine(ctx, a, b);
 		renderPoint(ctx, p);
 
-		ctx.fillStyle = "red";
-		ctx.strokeStyle = "red";
+		ctx.fillStyle = 'red';
+		ctx.strokeStyle = 'red';
 		renderLine(ctx, p, c);
 		renderPoint(ctx, c);
 
-		ctx.fillStyle = "green";
-		ctx.strokeStyle = "green";
+		ctx.fillStyle = 'green';
+		ctx.strokeStyle = 'green';
 		renderLine(ctx, c, r);
 		renderPoint(ctx, r);
 
@@ -149,7 +153,7 @@
 	}
 
 	function Test(render) {
-		const canvas = document.createElement("canvas");
+		const canvas = document.createElement('canvas');
 		document.body.append(canvas);
 
 		const context = createContext(canvas);

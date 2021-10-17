@@ -1,14 +1,16 @@
 import { test } from '/test/test.js';
 import { createStore } from './store.js';
 
+const { hasOwnProperty } = Object.prototype;
+
 test('-- store.js --');
 
 test('createStore(value)', (t) => {
 	const store = createStore();
 
-	t.equal(store.hasOwnProperty('get'), true);
-	t.equal(store.hasOwnProperty('set'), true);
-	t.equal(store.hasOwnProperty('subscribe'), true);
+	t.equal(hasOwnProperty.call(store, 'get'), true);
+	t.equal(hasOwnProperty.call(store, 'set'), true);
+	t.equal(hasOwnProperty.call(store, 'subscribe'), true);
 });
 
 test('store.get()', (t) => {

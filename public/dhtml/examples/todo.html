@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width" />
 <title>todo - dhtml</title>
@@ -32,7 +32,7 @@
 				items.add({
 					id: nextId++,
 					text: value,
-					done: false
+					done: false,
 				});
 
 				update();
@@ -62,19 +62,19 @@
 				items,
 				key: 'id',
 				parent: list,
-				create: item => TodoItem(item, scope),
-				update: (el, item) => el.update(item)
+				create: (item) => TodoItem(item, scope),
+				update: (el, item) => el.update(item),
 			});
 		}
 
-		form.onsubmit = event => {
+		form.onsubmit = (event) => {
 			event.preventDefault();
 			scope.add(input.value);
 			input.value = '';
 			input.focus();
 		};
 
-		reorder.onclick = event => {
+		reorder.onclick = (event) => {
 			scope.reorder();
 		};
 

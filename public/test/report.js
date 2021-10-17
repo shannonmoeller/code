@@ -1,11 +1,13 @@
 if (typeof window !== 'undefined') {
+	setup();
+}
+
+function setup() {
 	const { log, error } = console;
 	const pre = document.createElement('pre');
 
 	function toString(value) {
-		return typeof value !== 'string'
-			? JSON.stringify(value, null, 2)
-			: value;
+		return typeof value !== 'string' ? JSON.stringify(value, null, 2) : value;
 	}
 
 	function reportLog(...args) {

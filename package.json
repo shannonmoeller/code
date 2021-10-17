@@ -1,6 +1,10 @@
 {
   "private": true,
   "type": "module",
+  "scripts": {
+    "lint": "npx eslint --fix '**/*.js' && npx stylelint --fix '**/*.css' && prettier --write '**/*.{html,css,js}'",
+    "make": "node make.js && npm run lint"
+  },
   "eslintConfig": {
     "extends": "eslint:recommended",
     "env": {

@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width" />
 <title>clone - dhtml</title>
@@ -19,11 +19,11 @@
 		}
 
 		decrement.onclick = () => {
-			count.set(x => x - 1);
+			count.set((x) => x - 1);
 		};
 
 		increment.onclick = () => {
-			count.set(x => x + 1);
+			count.set((x) => x + 1);
 		};
 
 		reset.onclick = () => {
@@ -35,11 +35,7 @@
 		return view;
 	}
 
-	document.body.append(
-		Counter(),
-		Counter(),
-		Counter()
-	);
+	document.body.append(Counter(), Counter(), Counter());
 </script>
 
 <style>

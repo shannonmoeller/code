@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width" />
 <title>test tests</title>
@@ -59,10 +59,7 @@
 		t.deepEqual(new Map([['foo', 1]]), new Map([['foo', 1]]));
 
 		t.deepEqual({}, {});
-		t.deepEqual(
-			{foo: 1, bar: 2},
-			{foo: 1, bar: 2},
-		);
+		t.deepEqual({ foo: 1, bar: 2 }, { foo: 1, bar: 2 });
 
 		t.deepEqual(new Set(), new Set());
 		t.deepEqual(new Set([1]), new Set([1]));
@@ -82,10 +79,7 @@
 		t.deepEqual(new Map([['foo', 1]]), new Map([['foo', 2]]));
 
 		t.deepEqual({}, { foo: 1 });
-		t.deepEqual(
-			{foo: 1, bar: 2},
-			{foo: 1, bar: 2, baz: 3},
-		);
+		t.deepEqual({ foo: 1, bar: 2 }, { foo: 1, bar: 2, baz: 3 });
 
 		t.deepEqual(new Set(), new Set([1]));
 		t.deepEqual(new Set([1]), new Set([2]));
@@ -105,10 +99,7 @@
 		t.notDeepEqual(new Map([['foo', 1]]), new Map([['foo', 2]]));
 
 		t.notDeepEqual({}, { foo: 1 });
-		t.notDeepEqual(
-			{foo: 1, bar: 2},
-			{foo: 1, bar: 2, baz: 3},
-		);
+		t.notDeepEqual({ foo: 1, bar: 2 }, { foo: 1, bar: 2, baz: 3 });
 
 		t.notDeepEqual(new Set(), new Set([1]));
 		t.notDeepEqual(new Set([1]), new Set([2]));
@@ -128,19 +119,20 @@
 		t.notDeepEqual(new Map([['foo', 1]]), new Map([['foo', 1]]));
 
 		t.notDeepEqual({}, {});
-		t.notDeepEqual(
-			{foo: 1, bar: 2},
-			{foo: 1, bar: 2},
-		);
+		t.notDeepEqual({ foo: 1, bar: 2 }, { foo: 1, bar: 2 });
 
 		t.notDeepEqual(new Set(), new Set());
 		t.notDeepEqual(new Set([1]), new Set([1]));
 	});
 
 	test('throws() should pass', async (t) => {
-		await t.throws(() => {
-			throw new Error('derp');
-		}, null, 'yay');
+		await t.throws(
+			() => {
+				throw new Error('derp');
+			},
+			null,
+			'yay'
+		);
 
 		await t.throws(() => {
 			throw new Error('derp');
