@@ -17,6 +17,7 @@
 	let currentUrl = '';
 
 	function onEditorChange(content) {
+		document.title = content.slice(0, 20);
 		preview.srcdoc = content.replace(
 			/^(<!doctype html>)?/i,
 			`$1<base href="${currentUrl}" />`
