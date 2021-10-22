@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width" />
-<title>demo - dhtml</title>
+<title>demo</title>
 
 <script src="https://ajaxorg.github.io/ace-builds/src-noconflict/ace.js"></script>
 <script type="module">
@@ -17,7 +17,7 @@
 	let currentUrl = '';
 
 	function onEditorChange(content) {
-		document.title = content.match(/<title>([^<]+)<\/title>/)?.[0] || 'demo';
+		document.title = content.match(/<title>([^<]+)<\/title>/)?.[1] || 'demo';
 		preview.srcdoc = content.replace(
 			/^(<!doctype html>)?/i,
 			`$1<base href="${currentUrl}" />`
