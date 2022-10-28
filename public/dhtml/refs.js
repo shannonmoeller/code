@@ -1,5 +1,5 @@
 export function refs(node) {
-  const refs = {};
+  let refs = {};
 
   node.querySelectorAll('[ref]').forEach((el) => {
     refs[el.getAttribute('ref')] = el;

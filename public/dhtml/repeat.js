@@ -1,6 +1,6 @@
-const keyProp = Symbol('com.npmjs.dhtml.repeat.key');
+let keyProp = Symbol('com.npmjs.dhtml.repeat.key');
 
-const repeatDefaults = {
+let repeatDefaults = {
   update: () => {},
   key: 'key',
 };
@@ -14,7 +14,7 @@ export function empty(node) {
 }
 
 export function getKeyedChildNodes(parent) {
-  const keyedNodes = {};
+  let keyedNodes = {};
 
   let node = parent.firstChild;
 
@@ -27,7 +27,7 @@ export function getKeyedChildNodes(parent) {
 }
 
 export function repeat(options) {
-  const { parent, items, create, update, key } = {
+  let { parent, items, create, update, key } = {
     ...repeatDefaults,
     ...options,
   };
@@ -36,13 +36,13 @@ export function repeat(options) {
     return empty(parent);
   }
 
-  const getKey = typeof key === 'function' ? key : (item) => item[key];
-  const keyedNodes = getKeyedChildNodes(parent);
+  let getKey = typeof key === 'function' ? key : (item) => item[key];
+  let keyedNodes = getKeyedChildNodes(parent);
 
   let prevNode = null;
 
   items.forEach((item) => {
-    const key = getKey(item);
+    let key = getKey(item);
     let node = keyedNodes[key];
 
     if (node) {

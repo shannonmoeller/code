@@ -5,19 +5,9 @@ import {
   defineAttribute,
   defineEvent,
   hyphenate,
-  emit,
 } from './define.js';
 
-const { isPrototypeOf } = Object.prototype;
-
 test('-- define.js --');
-
-test('hyphenate(str)', (t) => {
-  t.equal(hyphenate('foo'), 'foo');
-  t.equal(hyphenate('fooBar'), 'foo-bar');
-  t.equal(hyphenate('FooBar'), '-foo-bar');
-  t.equal(hyphenate('foo-bar'), 'foo-bar');
-});
 
 test('defineElement(str, fn[, obj])', (t) => {
   function FooBar(ref) {
@@ -28,28 +18,28 @@ test('defineElement(str, fn[, obj])', (t) => {
     ref.ondisconnect = () => t.ok(true, 'disconnected');
   }
 
-  const FooBarElement = defineElement('foo-bar', FooBar, {
+  defineElement('foo-bar', FooBar, {
     attributes: {
       baz: Boolean,
     },
   });
 
-  t.equal(isPrototypeOf.call(HTMLElement, FooBarElement), true, 'is class');
-
-  const el = document.createElement('foo-bar');
+  let el = document.createElement('foo-bar');
 
   document.body.append(el);
-  t.equal(el.tagName, 'FOO-BAR');
 
+  t.equal(el.tagName, 'FOO-BAR');
   t.equal(el.baz, false);
+
   el.baz = true;
+
   t.equal(el.baz, true);
 
   el.remove();
 });
 
 test('defineAttribute(el, str[, obj])', (t) => {
-  const el = document.createElement('div');
+  let el = document.createElement('div');
 
   defineAttribute(el, 'baz', Boolean);
 
@@ -57,12 +47,13 @@ test('defineAttribute(el, str[, obj])', (t) => {
   t.equal(el.baz, false);
 
   el.baz = true;
+
   t.equal(el.getAttribute('baz'), '');
   t.equal(el.baz, true);
 });
 
 test('defineEvent(el, str)', async (t) => {
-  const el = document.createElement('div');
+  let el = document.createElement('div');
 
   defineEvent(el, 'greet');
 
@@ -73,6 +64,13 @@ test('defineEvent(el, str)', async (t) => {
       resolve();
     };
 
-    emit(el, 'greet');
+    el.dispatchEvent(new CustomEvent('greet'));
   });
+});
+
+test('hyphenate(str)', (t) => {
+  t.equal(hyphenate('foo'), 'foo');
+  t.equal(hyphenate('fooBar'), 'foo-bar');
+  t.equal(hyphenate('FooBar'), '-foo-bar');
+  t.equal(hyphenate('foo-bar'), 'foo-bar');
 });

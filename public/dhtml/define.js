@@ -1,4 +1,4 @@
-const defaultEvents = ['connect', 'disconnect', 'adopt', 'attributechange'];
+let defaultEvents = ['connect', 'disconnect', 'adopt', 'attributechange'];
 
 export class DhtmlElement extends HTMLElement {
   static attributes = {};
@@ -28,8 +28,8 @@ export class DhtmlElement extends HTMLElement {
       return;
     }
 
-    const connection = new AbortController();
-    const { signal } = connection;
+    let connection = new AbortController();
+    let { signal } = connection;
 
     this.#connection?.abort();
     this.#connection = connection;

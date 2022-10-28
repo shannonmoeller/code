@@ -1,15 +1,15 @@
-const fragmentCache = new WeakMap();
+let fragmentCache = new WeakMap();
 
 export function createFragment(strings) {
   if (fragmentCache.has(strings)) {
     return fragmentCache.get(strings);
   }
 
-  const template = document.createElement('template');
+  let template = document.createElement('template');
 
   template.innerHTML = strings.join('');
 
-  const { content } = template;
+  let { content } = template;
 
   fragmentCache.set(strings, content);
 
@@ -17,7 +17,7 @@ export function createFragment(strings) {
 }
 
 export function createTemplate(strings) {
-  const content = createFragment(strings);
+  let content = createFragment(strings);
 
   return () => content.cloneNode(true);
 }

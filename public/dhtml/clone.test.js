@@ -4,14 +4,14 @@ import { clone } from './clone.js';
 test('-- clone.js --');
 
 test('clone()', (t) => {
-  const template = document.createElement('template');
+  let template = document.createElement('template');
 
   template.id = 'foo';
   template.innerHTML = '<span></span>';
 
   document.body.append(template);
 
-  const a = clone('foo');
+  let a = clone('foo');
 
   t.equal(a.nodeType, Node.DOCUMENT_FRAGMENT_NODE);
   t.equal(a.childNodes[0].tagName, 'SPAN');

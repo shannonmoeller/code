@@ -4,7 +4,7 @@ import { refs } from './refs.js';
 test('-- refs.js --');
 
 test('refs(el)', (t) => {
-  const div = document.createElement('div');
+  let div = document.createElement('div');
 
   div.innerHTML = `
     <span>before</span>
@@ -13,14 +13,14 @@ test('refs(el)', (t) => {
     <span>after</span>
   `;
 
-  const [before, fooChild, barChild, after] = div.children;
+  let [before, fooChild, barChild, after] = div.children;
 
   t.ok(before);
   t.equal(fooChild.hasAttribute('ref'), true, 'has ref');
   t.equal(barChild.hasAttribute('ref'), true, 'has ref');
   t.ok(after);
 
-  const { foo, bar } = refs(div);
+  let { foo, bar } = refs(div);
 
   t.equal(foo, fooChild, 'same foo');
   t.equal(bar, barChild, 'same bar');

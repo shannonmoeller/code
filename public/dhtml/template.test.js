@@ -4,9 +4,9 @@ import { createFragment, html, svg } from './template.js';
 test('-- template.js --');
 
 test('createFragment()', (t) => {
-  const foo = () => createFragment`<span></span>`;
-  const a = foo();
-  const b = foo();
+  let foo = () => createFragment`<span></span>`;
+  let a = foo();
+  let b = foo();
 
   t.equal(a, b);
   t.equal(a.nodeType, Node.DOCUMENT_FRAGMENT_NODE);
@@ -14,9 +14,9 @@ test('createFragment()', (t) => {
 
 test('html()', (t) => {
   // prettier-ignore
-  const template = html`<span></span>`;
-  const a = template();
-  const b = template();
+  let template = html`<span></span>`;
+  let a = template();
+  let b = template();
 
   t.equal(typeof template, 'function');
 
@@ -30,9 +30,9 @@ test('html()', (t) => {
 });
 
 test('svg()', (t) => {
-  const template = svg`<g></g>`;
-  const a = template();
-  const b = template();
+  let template = svg`<g></g>`;
+  let a = template();
+  let b = template();
 
   t.equal(typeof template, 'function');
 
