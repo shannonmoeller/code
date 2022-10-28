@@ -1,5 +1,5 @@
 :root {
-	--background: hsl(0 0% 10%);
-	--foreground: hsl(0 0% 90%);
-	--primary: hsl(210 100% 50%);
+  --background: hsl(0 0% 10%);
+  --foreground: hsl(0 0% 90%);
+  --primary: hsl(210 100% 50%);
 }

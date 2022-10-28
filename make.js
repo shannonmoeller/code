@@ -7,116 +7,116 @@ const { compare } = new Intl.Collator('en', { numeric: true });
 const ignoredPaths = ['assets', 'demo', 'index.html'];
 
 async function main() {
-	const children = [
-		...(await dirToObject('.')),
-		{
-			type: 'file',
-			name: 'GitHub',
-			path: 'https://github.com/shannonmoeller/code',
-		},
-	];
+  const children = [
+    ...(await dirToObject('.')),
+    {
+      type: 'file',
+      name: 'GitHub',
+      path: 'https://github.com/shannonmoeller/code',
+    },
+  ];
 
-	const html = String(renderPage(children)).trim();
+  const html = String(renderPage(children)).trim();
 
-	await writeFile('public/index.html', html);
+  await writeFile('public/index.html', html);
 }
 
 async function dirToObject(dir) {
-	const contents = await readdir(join('public', dir), {
-		withFileTypes: true,
-	});
+  const contents = await readdir(join('public', dir), {
+    withFileTypes: true,
+  });
 
-	contents.sort((a, b) => {
-		return compare(a.name, b.name);
-	});
+  contents.sort((a, b) => {
+    return compare(a.name, b.name);
+  });
 
-	const dirs = [];
-	const files = [];
+  const dirs = [];
+  const files = [];
 
-	for (const entry of contents) {
-		const { name } = entry;
-		const path = join(dir, name);
+  for (const entry of contents) {
+    const { name } = entry;
+    const path = join(dir, name);
 
-		if (entry.isSymbolicLink() || isIgnored(path)) {
-			continue;
-		}
+    if (entry.isSymbolicLink() || isIgnored(path)) {
+      continue;
+    }
 
-		if (entry.isDirectory()) {
-			dirs.push({
-				type: 'directory',
-				name,
-				path,
-				children: await dirToObject(path),
-			});
-		}
+    if (entry.isDirectory()) {
+      dirs.push({
+        type: 'directory',
+        name,
+        path,
+        children: await dirToObject(path),
+      });
+    }
 
-		if (entry.isFile()) {
-			files.push({
-				type: 'file',
-				name,
-				path,
-			});
-		}
-	}
+    if (entry.isFile()) {
+      files.push({
+        type: 'file',
+        name,
+        path,
+      });
+    }
+  }
 
-	return [...dirs, ...files];
+  return [...dirs, ...files];
 }
 
 function isIgnored(path) {
-	return ignoredPaths.some((x) => {
-		return path.startsWith(x);
-	});
+  return ignoredPaths.some((x) => {
+    return path.startsWith(x);
+  });
 }
 
 function renderPage(children) {
-	return html`
-		<!DOCTYPE html>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<title>code</title>
+  return html`
+    <!DOCTYPE html>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>code</title>
 
-		<script type="module">
-			import '/assets/index.js';
-		</script>
+    <script type="module">
+      import '/assets/index.js';
+    </script>
 
-		<style>
-			@import '/assets/index.css';
-		</style>
+    <style>
+      @import '/assets/index.css';
+    </style>
 
-		${renderTree(children)}
-	`;
+    ${renderTree(children)}
+  `;
 }
 
 function renderTree(children) {
-	return html`
-		<ol class="tree">
-			${children.map((child) =>
-				child.type === 'directory' ? renderDirectory(child) : renderFile(child)
-			)}
-		</ol>
-	`;
+  return html`
+    <ol class="tree">
+      ${children.map((child) =>
+        child.type === 'directory' ? renderDirectory(child) : renderFile(child)
+      )}
+    </ol>
+  `;
 }
 
 function renderDirectory(dir) {
-	return html`
-		<li class="tree-dir">
-			<details class="tree-dir" data-path="${dir.path}">
-				<summary>${dir.name}/</summary>
-				${renderTree(dir.children)}
-			</details>
-		</li>
-	`;
+  return html`
+    <li class="tree-dir">
+      <details class="tree-dir" data-path="${dir.path}">
+        <summary>${dir.name}/</summary>
+        ${renderTree(dir.children)}
+      </details>
+    </li>
+  `;
 }
 
 function renderFile(file) {
-	const isHtml = file.path.endsWith('.html');
+  const isHtml = file.path.endsWith('.html');
 
-	return html`
-		<li class="tree-file">
-			<a href="${file.path}">${file.name}</a>
-			${isHtml && html`<a href="/demo/#!/${file.path}">◧</a>`}
-		</li>
-	`;
+  return html`
+    <li class="tree-file">
+      <a href="${file.path}">${file.name}</a>
+      ${isHtml && html`<a href="/demo/#!/${file.path}">◧</a>`}
+    </li>
+  `;
 }
 
 main().catch(console.error);

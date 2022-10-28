@@ -4,27 +4,27 @@ import { refs } from './refs.js';
 test('-- refs.js --');
 
 test('refs(el)', (t) => {
-	const div = document.createElement('div');
+  const div = document.createElement('div');
 
-	div.innerHTML = `
+  div.innerHTML = `
     <span>before</span>
     <span ref="foo">Foo</span>
     <span ref="bar">Bar</span>
     <span>after</span>
   `;
 
-	const [before, fooChild, barChild, after] = div.children;
+  const [before, fooChild, barChild, after] = div.children;
 
-	t.ok(before);
-	t.equal(fooChild.hasAttribute('ref'), true, 'has ref');
-	t.equal(barChild.hasAttribute('ref'), true, 'has ref');
-	t.ok(after);
+  t.ok(before);
+  t.equal(fooChild.hasAttribute('ref'), true, 'has ref');
+  t.equal(barChild.hasAttribute('ref'), true, 'has ref');
+  t.ok(after);
 
-	const { foo, bar } = refs(div);
+  const { foo, bar } = refs(div);
 
-	t.equal(foo, fooChild, 'same foo');
-	t.equal(bar, barChild, 'same bar');
+  t.equal(foo, fooChild, 'same foo');
+  t.equal(bar, barChild, 'same bar');
 
-	t.equal(fooChild.hasAttribute('ref'), false, 'removed ref');
-	t.equal(barChild.hasAttribute('ref'), false, 'removed ref');
+  t.equal(fooChild.hasAttribute('ref'), false, 'removed ref');
+  t.equal(barChild.hasAttribute('ref'), false, 'removed ref');
 });

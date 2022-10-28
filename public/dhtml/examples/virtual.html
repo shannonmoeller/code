@@ -4,51 +4,51 @@
 <title>virtual - dhtml</title>
 
 <script type="module">
-	import { clone } from '../clone.js';
-	import { refs } from '../refs.js';
+  import { clone } from '../clone.js';
+  import { refs } from '../refs.js';
 
-	function Counter(props) {
-		const view = clone('counter');
-		const { label, decrement, increment, reset } = refs(view);
+  function Counter(props) {
+    const view = clone('counter');
+    const { label, decrement, increment, reset } = refs(view);
 
-		function update() {
-			label.textContent = props.count;
-		}
+    function update() {
+      label.textContent = props.count;
+    }
 
-		decrement.onclick = () => {
-			props.count -= 1;
-			update();
-		};
+    decrement.onclick = () => {
+      props.count -= 1;
+      update();
+    };
 
-		increment.onclick = () => {
-			props.count += 1;
-			update();
-		};
+    increment.onclick = () => {
+      props.count += 1;
+      update();
+    };
 
-		reset.onclick = () => {
-			props.count = 0;
-			update();
-		};
+    reset.onclick = () => {
+      props.count = 0;
+      update();
+    };
 
-		update();
+    update();
 
-		return view;
-	}
+    return view;
+  }
 
-	document.body.append(
-		Counter({ count: 0 }),
-		Counter({ count: 1 }),
-		Counter({ count: 2 })
-	);
+  document.body.append(
+    Counter({ count: 0 }),
+    Counter({ count: 1 }),
+    Counter({ count: 2 })
+  );
 </script>
 
 <style>
-	@import '/assets/index.css';
+  @import '/assets/index.css';
 </style>
 
 <template id="counter">
-	<button ref="decrement">-</button>
-	<span ref="label"></span>
-	<button ref="increment">+</button>
-	<button ref="reset">↻</button>
+  <button ref="decrement">-</button>
+  <span ref="label"></span>
+  <button ref="increment">+</button>
+  <button ref="reset">↻</button>
 </template>

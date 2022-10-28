@@ -5,74 +5,74 @@
 
 <script src="https://ajaxorg.github.io/ace-builds/src-noconflict/ace.js"></script>
 <script type="module">
-	const code = document.getElementById('code');
-	const preview = document.getElementById('preview');
-	const editor = ace.edit(code, {
-		mode: 'ace/mode/html',
-		theme: 'ace/theme/monokai',
-		showPrintMargin: false,
-		tabSize: 2,
-	});
+  const code = document.getElementById('code');
+  const preview = document.getElementById('preview');
+  const editor = ace.edit(code, {
+    mode: 'ace/mode/html',
+    theme: 'ace/theme/monokai',
+    showPrintMargin: false,
+    tabSize: 2,
+  });
 
-	let currentUrl = '';
+  let currentUrl = '';
 
-	function onEditorChange(content) {
-		document.title = content.slice(0, 20);
-		preview.srcdoc = content.replace(
-			/^(<!doctype html>)?/i,
-			`$1<base href="${currentUrl}" />`
-		);
-	}
+  function onEditorChange(content) {
+    document.title = content.slice(0, 20);
+    preview.srcdoc = content.replace(
+      /^(<!doctype html>)?/i,
+      `$1<base href="${currentUrl}" />`
+    );
+  }
 
-	function onHashChange() {
-		const url = new URL(location.hash.replace(/^#!\//, ''), location.origin);
+  function onHashChange() {
+    const url = new URL(location.hash.replace(/^#!\//, ''), location.origin);
 
-		if (url.origin !== location.origin || url.pathname === '/') {
-			currentUrl = '';
-			editor.session.setValue('');
-			return;
-		}
+    if (url.origin !== location.origin || url.pathname === '/') {
+      currentUrl = '';
+      editor.session.setValue('');
+      return;
+    }
 
-		fetch(url)
-			.then((response) => response.text())
-			.then((content) => {
-				currentUrl = String(url);
-				editor.session.setValue(content);
-			});
-	}
+    fetch(url)
+      .then((response) => response.text())
+      .then((content) => {
+        currentUrl = String(url);
+        editor.session.setValue(content);
+      });
+  }
 
-	editor.on('change', () => onEditorChange(editor.getValue()));
-	addEventListener('hashchange', onHashChange);
-	onHashChange();
+  editor.on('change', () => onEditorChange(editor.getValue()));
+  addEventListener('hashchange', onHashChange);
+  onHashChange();
 </script>
 
 <style>
-	@import '/assets/index.css';
+  @import '/assets/index.css';
 
-	body,
-	iframe,
-	pre {
-		margin: 0;
-		padding: 0;
-		border: 0;
-	}
+  body,
+  iframe,
+  pre {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
 
-	.demo {
-		display: grid;
-		grid-template: 1fr / 1fr 1fr;
-		place-items: stretch;
-		height: 100vh;
-		width: 100vw;
-	}
+  .demo {
+    display: grid;
+    grid-template: 1fr / 1fr 1fr;
+    place-items: stretch;
+    height: 100vh;
+    width: 100vw;
+  }
 
-	@media (orientation: portrait) {
-		.demo {
-			grid-template: 1fr 1fr / 1fr;
-		}
-	}
+  @media (orientation: portrait) {
+    .demo {
+      grid-template: 1fr 1fr / 1fr;
+    }
+  }
 </style>
 
 <main class="demo">
-	<textarea class="demo-code" id="code"></textarea>
-	<iframe class="demo-preview" id="preview" srcdoc=""></iframe>
+  <textarea class="demo-code" id="code"></textarea>
+  <iframe class="demo-preview" id="preview" srcdoc=""></iframe>
 </main>

@@ -4,68 +4,68 @@
 <title>define</title>
 
 <script type="module">
-	import { DhtmlElement } from '../define.js';
+  import { DhtmlElement } from '../define.js';
 
-	class GameGridElement extends DhtmlElement {
-		static attributes = {
-			checked: Boolean,
-			x: Number,
-			y: Number,
-		};
+  class GameGridElement extends DhtmlElement {
+    static attributes = {
+      checked: Boolean,
+      x: Number,
+      y: Number,
+    };
 
-		init() {
-			let xNode = document.createTextNode(this.x);
-			let yNode = document.createTextNode(this.y);
+    init() {
+      let xNode = document.createTextNode(this.x);
+      let yNode = document.createTextNode(this.y);
 
-			let update = () => {
-				xNode.textContent = this.x;
-				yNode.textContent = this.y;
-			};
+      let update = () => {
+        xNode.textContent = this.x;
+        yNode.textContent = this.y;
+      };
 
-			this.addEventListener('click', (event) => {
-				this.checked = !this.checked;
-			});
+      this.addEventListener('click', (event) => {
+        this.checked = !this.checked;
+      });
 
-			this.addEventListener('mousemove', (event) => {
-				this.x = event.offsetX;
-				this.y = event.offsetY;
-				update();
-			});
+      this.addEventListener('mousemove', (event) => {
+        this.x = event.offsetX;
+        this.y = event.offsetY;
+        update();
+      });
 
-			this.append(xNode, ',', yNode);
-		}
-	}
+      this.append(xNode, ',', yNode);
+    }
+  }
 
-	customElements.define('game-grid', GameGridElement);
+  customElements.define('game-grid', GameGridElement);
 </script>
 
 <style>
-	@import '/assets/index.css';
+  @import '/assets/index.css';
 
-	.demos {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, 150px);
-		place-content: center;
-	}
+  .demos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 150px);
+    place-content: center;
+  }
 
-	game-grid {
-		display: block;
-		box-sizing: border-box;
-		padding: 1em;
-		height: 150px;
-		width: 150px;
-		background: black;
-		color: white;
-	}
+  game-grid {
+    display: block;
+    box-sizing: border-box;
+    padding: 1em;
+    height: 150px;
+    width: 150px;
+    background: black;
+    color: white;
+  }
 
-	game-grid[checked] {
-		background: dodgerblue;
-	}
+  game-grid[checked] {
+    background: dodgerblue;
+  }
 </style>
 
 <main class="demos">
-	<game-grid x="0" y="0"></game-grid>
-	<game-grid x="0" y="0"></game-grid>
-	<game-grid x="0" y="0" checked></game-grid>
-	<game-grid x="0" y="0"></game-grid>
+  <game-grid x="0" y="0"></game-grid>
+  <game-grid x="0" y="0"></game-grid>
+  <game-grid x="0" y="0" checked></game-grid>
+  <game-grid x="0" y="0"></game-grid>
 </main>

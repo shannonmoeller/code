@@ -4,160 +4,160 @@
 <title>todo - dhtml</title>
 
 <script type="module">
-	import { clone } from '../clone.js';
-	import { refs } from '../refs.js';
-	import { repeat } from '../repeat.js';
+  import { clone } from '../clone.js';
+  import { refs } from '../refs.js';
+  import { repeat } from '../repeat.js';
 
-	function shuffle(arr) {
-		let a = arr.length;
+  function shuffle(arr) {
+    let a = arr.length;
 
-		while (a > 0) {
-			const b = Math.floor(Math.random() * a--);
+    while (a > 0) {
+      const b = Math.floor(Math.random() * a--);
 
-			[arr[a], arr[b]] = [arr[b], arr[a]];
-		}
+      [arr[a], arr[b]] = [arr[b], arr[a]];
+    }
 
-		return arr;
-	}
+    return arr;
+  }
 
-	function TodoApp() {
-		const view = clone('todo-app');
-		const { form, input, reorder, list } = refs(view);
+  function TodoApp() {
+    const view = clone('todo-app');
+    const { form, input, reorder, list } = refs(view);
 
-		let nextId = 0;
-		let items = new Set();
+    let nextId = 0;
+    let items = new Set();
 
-		const scope = {
-			add(value) {
-				items.add({
-					id: nextId++,
-					text: value,
-					done: false,
-				});
+    const scope = {
+      add(value) {
+        items.add({
+          id: nextId++,
+          text: value,
+          done: false,
+        });
 
-				update();
-			},
+        update();
+      },
 
-			reorder() {
-				items = new Set(shuffle([...items]));
+      reorder() {
+        items = new Set(shuffle([...items]));
 
-				update();
-			},
+        update();
+      },
 
-			toggle(item) {
-				item.done = !item.done;
+      toggle(item) {
+        item.done = !item.done;
 
-				update();
-			},
+        update();
+      },
 
-			remove(item) {
-				items.delete(item);
+      remove(item) {
+        items.delete(item);
 
-				update();
-			},
-		};
+        update();
+      },
+    };
 
-		function update() {
-			repeat({
-				items,
-				key: 'id',
-				parent: list,
-				create: (item) => TodoItem(item, scope),
-				update: (el, item) => el.update(item),
-			});
-		}
+    function update() {
+      repeat({
+        items,
+        key: 'id',
+        parent: list,
+        create: (item) => TodoItem(item, scope),
+        update: (el, item) => el.update(item),
+      });
+    }
 
-		form.onsubmit = (event) => {
-			event.preventDefault();
-			scope.add(input.value);
-			input.value = '';
-			input.focus();
-		};
+    form.onsubmit = (event) => {
+      event.preventDefault();
+      scope.add(input.value);
+      input.value = '';
+      input.focus();
+    };
 
-		reorder.onclick = (event) => {
-			scope.reorder();
-		};
+    reorder.onclick = (event) => {
+      scope.reorder();
+    };
 
-		update();
+    update();
 
-		return view;
-	}
+    return view;
+  }
 
-	function TodoItem(item, scope) {
-		const view = clone('todo-item');
-		const { root, text, done, remove } = refs(view);
+  function TodoItem(item, scope) {
+    const view = clone('todo-item');
+    const { root, text, done, remove } = refs(view);
 
-		function update(nextItem = item) {
-			text.textContent = nextItem.text;
-			done.checked = nextItem.done;
-			item = nextItem;
-		}
+    function update(nextItem = item) {
+      text.textContent = nextItem.text;
+      done.checked = nextItem.done;
+      item = nextItem;
+    }
 
-		root.update = update;
-		done.onclick = () => scope.toggle(item);
-		remove.onclick = () => scope.remove(item);
+    root.update = update;
+    done.onclick = () => scope.toggle(item);
+    remove.onclick = () => scope.remove(item);
 
-		update();
+    update();
 
-		return root;
-	}
+    return root;
+  }
 
-	document.body.append(TodoApp());
+  document.body.append(TodoApp());
 </script>
 
 <style>
-	@import '/assets/index.css';
+  @import '/assets/index.css';
 
-	.todo-app {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: 1em;
-	}
+  .todo-app {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1em;
+  }
 
-	.todo-form {
-		display: grid;
-		grid-template-columns: 1fr min-content min-content;
-		gap: 0.5em;
-	}
+  .todo-form {
+    display: grid;
+    grid-template-columns: 1fr min-content min-content;
+    gap: 0.5em;
+  }
 
-	.todo-item {
-		display: grid;
-		grid-template-columns: 1fr auto;
-	}
+  .todo-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+  }
 
-	.todo-list {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: 0.5em;
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
+  .todo-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5em;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
 
-	.todo-title {
-		font-size: 3em;
-		line-height: 1;
-	}
+  .todo-title {
+    font-size: 3em;
+    line-height: 1;
+  }
 </style>
 
 <template id="todo-app">
-	<main class="todo-app" ref="root">
-		<h1 class="todo-title">todos</h1>
-		<form class="todo-form" action="." ref="form">
-			<input placeholder="What needs to be done?" ref="input" />
-			<button type="submit">Add</button>
-			<button type="button" ref="reorder">Reorder</button>
-		</form>
-		<ul class="todo-list" ref="list"></ul>
-	</main>
+  <main class="todo-app" ref="root">
+    <h1 class="todo-title">todos</h1>
+    <form class="todo-form" action="." ref="form">
+      <input placeholder="What needs to be done?" ref="input" />
+      <button type="submit">Add</button>
+      <button type="button" ref="reorder">Reorder</button>
+    </form>
+    <ul class="todo-list" ref="list"></ul>
+  </main>
 </template>
 
 <template id="todo-item">
-	<li class="todo-item" ref="root">
-		<label>
-			<input type="checkbox" ref="done" />
-			<span ref="text"></span>
-		</label>
-		<button ref="remove">Delete</button>
-	</li>
+  <li class="todo-item" ref="root">
+    <label>
+      <input type="checkbox" ref="done" />
+      <span ref="text"></span>
+    </label>
+    <button ref="remove">Delete</button>
+  </li>
 </template>

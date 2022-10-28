@@ -4,5 +4,5 @@ import { repeat } from './repeat.js';
 test('-- repeat.js --');
 
 test('repeat()', (t) => {
-	t.ok(repeat);
+  t.ok(repeat);
 });

@@ -4,163 +4,163 @@
 <title>test tests</title>
 
 <script type="module">
-	import './report.js';
-	import { test } from './test.js';
+  import './report.js';
+  import { test } from './test.js';
 
-	test('ok() should pass', async (t) => {
-		t.ok(true, 'yay');
-		t.ok(true);
-	});
+  test('ok() should pass', async (t) => {
+    t.ok(true, 'yay');
+    t.ok(true);
+  });
 
-	test('ok() should fail', async (t) => {
-		t.ok(false, 'dang');
-		t.ok(false);
-	});
+  test('ok() should fail', async (t) => {
+    t.ok(false, 'dang');
+    t.ok(false);
+  });
 
-	test('equal() should pass', async (t) => {
-		t.equal(true, true, 'yay');
-		t.equal(1, 1);
+  test('equal() should pass', async (t) => {
+    t.equal(true, true, 'yay');
+    t.equal(1, 1);
 
-		const obj = {};
-		t.equal(obj, obj);
-	});
+    const obj = {};
+    t.equal(obj, obj);
+  });
 
-	test('equal() should fail', async (t) => {
-		t.equal(true, false, 'dang');
-		t.equal(1, 2);
-		t.equal({}, {});
-	});
+  test('equal() should fail', async (t) => {
+    t.equal(true, false, 'dang');
+    t.equal(1, 2);
+    t.equal({}, {});
+  });
 
-	test('notEqual() should pass', async (t) => {
-		t.notEqual(true, false, 'yay');
-		t.notEqual(1, 2);
-		t.notEqual({}, {});
-	});
+  test('notEqual() should pass', async (t) => {
+    t.notEqual(true, false, 'yay');
+    t.notEqual(1, 2);
+    t.notEqual({}, {});
+  });
 
-	test('notEqual() should fail', async (t) => {
-		t.notEqual(true, true, 'dang');
-		t.notEqual(1, 1);
+  test('notEqual() should fail', async (t) => {
+    t.notEqual(true, true, 'dang');
+    t.notEqual(1, 1);
 
-		const obj = {};
-		t.notEqual(obj, obj);
-	});
+    const obj = {};
+    t.notEqual(obj, obj);
+  });
 
-	test('deepEqual() should pass', async (t) => {
-		t.deepEqual(true, true, 'yay');
-		t.deepEqual(1, 1);
+  test('deepEqual() should pass', async (t) => {
+    t.deepEqual(true, true, 'yay');
+    t.deepEqual(1, 1);
 
-		t.deepEqual([], []);
-		t.deepEqual([1], [1]);
+    t.deepEqual([], []);
+    t.deepEqual([1], [1]);
 
-		const now = Date.now();
-		t.deepEqual(new Date(now), new Date(now));
+    const now = Date.now();
+    t.deepEqual(new Date(now), new Date(now));
 
-		t.deepEqual(new Map(), new Map());
-		t.deepEqual(new Map([['foo', 1]]), new Map([['foo', 1]]));
+    t.deepEqual(new Map(), new Map());
+    t.deepEqual(new Map([['foo', 1]]), new Map([['foo', 1]]));
 
-		t.deepEqual({}, {});
-		t.deepEqual({ foo: 1, bar: 2 }, { foo: 1, bar: 2 });
+    t.deepEqual({}, {});
+    t.deepEqual({ foo: 1, bar: 2 }, { foo: 1, bar: 2 });
 
-		t.deepEqual(new Set(), new Set());
-		t.deepEqual(new Set([1]), new Set([1]));
-	});
+    t.deepEqual(new Set(), new Set());
+    t.deepEqual(new Set([1]), new Set([1]));
+  });
 
-	test('deepEqual() should fail', async (t) => {
-		t.deepEqual(true, false, 'dang');
-		t.deepEqual(1, 2);
+  test('deepEqual() should fail', async (t) => {
+    t.deepEqual(true, false, 'dang');
+    t.deepEqual(1, 2);
 
-		t.deepEqual([], [1]);
-		t.deepEqual([1], [2]);
+    t.deepEqual([], [1]);
+    t.deepEqual([1], [2]);
 
-		const now = Date.now();
-		t.deepEqual(new Date(now), new Date(now + 1));
+    const now = Date.now();
+    t.deepEqual(new Date(now), new Date(now + 1));
 
-		t.deepEqual(new Map(), new Map([['foo', 1]]));
-		t.deepEqual(new Map([['foo', 1]]), new Map([['foo', 2]]));
+    t.deepEqual(new Map(), new Map([['foo', 1]]));
+    t.deepEqual(new Map([['foo', 1]]), new Map([['foo', 2]]));
 
-		t.deepEqual({}, { foo: 1 });
-		t.deepEqual({ foo: 1, bar: 2 }, { foo: 1, bar: 2, baz: 3 });
+    t.deepEqual({}, { foo: 1 });
+    t.deepEqual({ foo: 1, bar: 2 }, { foo: 1, bar: 2, baz: 3 });
 
-		t.deepEqual(new Set(), new Set([1]));
-		t.deepEqual(new Set([1]), new Set([2]));
-	});
+    t.deepEqual(new Set(), new Set([1]));
+    t.deepEqual(new Set([1]), new Set([2]));
+  });
 
-	test('notDeepEqual() should pass', async (t) => {
-		t.notDeepEqual(true, false, 'yay');
-		t.notDeepEqual(1, 2);
+  test('notDeepEqual() should pass', async (t) => {
+    t.notDeepEqual(true, false, 'yay');
+    t.notDeepEqual(1, 2);
 
-		t.notDeepEqual([], [1]);
-		t.notDeepEqual([1], [2]);
+    t.notDeepEqual([], [1]);
+    t.notDeepEqual([1], [2]);
 
-		const now = Date.now();
-		t.notDeepEqual(new Date(now), new Date(now + 1));
+    const now = Date.now();
+    t.notDeepEqual(new Date(now), new Date(now + 1));
 
-		t.notDeepEqual(new Map(), new Map([['foo', 1]]));
-		t.notDeepEqual(new Map([['foo', 1]]), new Map([['foo', 2]]));
+    t.notDeepEqual(new Map(), new Map([['foo', 1]]));
+    t.notDeepEqual(new Map([['foo', 1]]), new Map([['foo', 2]]));
 
-		t.notDeepEqual({}, { foo: 1 });
-		t.notDeepEqual({ foo: 1, bar: 2 }, { foo: 1, bar: 2, baz: 3 });
+    t.notDeepEqual({}, { foo: 1 });
+    t.notDeepEqual({ foo: 1, bar: 2 }, { foo: 1, bar: 2, baz: 3 });
 
-		t.notDeepEqual(new Set(), new Set([1]));
-		t.notDeepEqual(new Set([1]), new Set([2]));
-	});
+    t.notDeepEqual(new Set(), new Set([1]));
+    t.notDeepEqual(new Set([1]), new Set([2]));
+  });
 
-	test('notDeepEqual() should fail', async (t) => {
-		t.notDeepEqual(true, true, 'dang');
-		t.notDeepEqual(1, 1);
+  test('notDeepEqual() should fail', async (t) => {
+    t.notDeepEqual(true, true, 'dang');
+    t.notDeepEqual(1, 1);
 
-		t.notDeepEqual([], []);
-		t.notDeepEqual([1], [1]);
+    t.notDeepEqual([], []);
+    t.notDeepEqual([1], [1]);
 
-		const now = Date.now();
-		t.notDeepEqual(new Date(now), new Date(now));
+    const now = Date.now();
+    t.notDeepEqual(new Date(now), new Date(now));
 
-		t.notDeepEqual(new Map(), new Map());
-		t.notDeepEqual(new Map([['foo', 1]]), new Map([['foo', 1]]));
+    t.notDeepEqual(new Map(), new Map());
+    t.notDeepEqual(new Map([['foo', 1]]), new Map([['foo', 1]]));
 
-		t.notDeepEqual({}, {});
-		t.notDeepEqual({ foo: 1, bar: 2 }, { foo: 1, bar: 2 });
+    t.notDeepEqual({}, {});
+    t.notDeepEqual({ foo: 1, bar: 2 }, { foo: 1, bar: 2 });
 
-		t.notDeepEqual(new Set(), new Set());
-		t.notDeepEqual(new Set([1]), new Set([1]));
-	});
+    t.notDeepEqual(new Set(), new Set());
+    t.notDeepEqual(new Set([1]), new Set([1]));
+  });
 
-	test('throws() should pass', async (t) => {
-		await t.throws(
-			() => {
-				throw new Error('derp');
-			},
-			null,
-			'yay'
-		);
+  test('throws() should pass', async (t) => {
+    await t.throws(
+      () => {
+        throw new Error('derp');
+      },
+      null,
+      'yay'
+    );
 
-		await t.throws(() => {
-			throw new Error('derp');
-		});
+    await t.throws(() => {
+      throw new Error('derp');
+    });
 
-		await t.throws(() => {
-			throw new Error('derp');
-		}, 'derp');
+    await t.throws(() => {
+      throw new Error('derp');
+    }, 'derp');
 
-		await t.throws(() => {
-			throw new Error('derp i say');
-		}, /^derp/);
-	});
+    await t.throws(() => {
+      throw new Error('derp i say');
+    }, /^derp/);
+  });
 
-	test('throws() should fail', async (t) => {
-		await t.throws(() => {}, null, 'dang');
-		await t.throws(() => {});
+  test('throws() should fail', async (t) => {
+    await t.throws(() => {}, null, 'dang');
+    await t.throws(() => {});
 
-		await t.throws(() => {
-			throw new Error('derp');
-		}, 'lol');
+    await t.throws(() => {
+      throw new Error('derp');
+    }, 'lol');
 
-		await t.throws(() => {
-			throw new Error('derp i say');
-		}, /^lol/);
-	});
+    await t.throws(() => {
+      throw new Error('derp i say');
+    }, /^lol/);
+  });
 </script>
 
 <style>
-	@import '/assets/index.css';
+  @import '/assets/index.css';
 </style>

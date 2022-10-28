@@ -1,12 +1,12 @@
 html {
-	font-size: 62.5%;
+  font-size: 62.5%;
 }
 
 body {
-	background: var(--background);
-	color: var(--foreground);
-	font: 300 1.6rem/1.6 sans-serif;
-	margin: 3em;
+  background: var(--background);
+  color: var(--foreground);
+  font: 300 1.6rem/1.6 sans-serif;
+  margin: 3em;
 }
 
 h1,
@@ -15,37 +15,37 @@ h3,
 h4,
 h5,
 h6 {
-	margin: 0;
-	font-weight: inherit;
+  margin: 0;
+  font-weight: inherit;
 }
 
 a {
-	color: var(--primary);
+  color: var(--primary);
 }
 
 a:hover {
-	text-decoration: underline;
+  text-decoration: underline;
 }
 
 pre {
-	display: block;
-	font-family: monospace;
+  display: block;
+  font-family: monospace;
 }
 
 summary {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 :focus {
-	outline: 3px solid var(--primary);
+  outline: 3px solid var(--primary);
 }
 
 @supports selector(:focus-visible) {
-	:focus {
-		outline: unset;
-	}
+  :focus {
+    outline: unset;
+  }
 
-	:focus-visible {
-		outline: 3px solid var(--primary);
-	}
+  :focus-visible {
+    outline: 3px solid var(--primary);
+  }
 }

@@ -1,37 +1,37 @@
 export function createStore(state) {
-	const listeners = new Set();
+  const listeners = new Set();
 
-	return {
-		get() {
-			return state;
-		},
+  return {
+    get() {
+      return state;
+    },
 
-		set(next) {
-			state = typeof next === 'function' ? next(state) : next;
+    set(next) {
+      state = typeof next === 'function' ? next(state) : next;
 
-			return Promise.all(
-				[...listeners].map(async (listener) => {
-					await listener(state);
-				})
-			);
-		},
+      return Promise.all(
+        [...listeners].map(async (listener) => {
+          await listener(state);
+        })
+      );
+    },
 
-		subscribe(listener, options = {}) {
-			const { immediate = true } = options;
+    subscribe(listener, options = {}) {
+      const { immediate = true } = options;
 
-			listeners.add(listener);
+      listeners.add(listener);
 
-			if (immediate) {
-				listener(state);
-			}
+      if (immediate) {
+        listener(state);
+      }
 
-			return () => {
-				listeners.delete(listener);
-			};
-		},
+      return () => {
+        listeners.delete(listener);
+      };
+    },
 
-		unsubscribe(listener) {
-			listeners.delete(listener);
-		},
-	};
+    unsubscribe(listener) {
+      listeners.delete(listener);
+    },
+  };
 }
