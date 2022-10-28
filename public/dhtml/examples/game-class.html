@@ -17,10 +17,10 @@
 			let xNode = document.createTextNode(this.x);
 			let yNode = document.createTextNode(this.y);
 
-			function update() {
+			let update = () => {
 				xNode.textContent = this.x;
 				yNode.textContent = this.y;
-			}
+			};
 
 			this.addEventListener('click', (event) => {
 				this.checked = !this.checked;
