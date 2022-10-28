@@ -8,29 +8,29 @@
 	import { clone } from '../clone.js';
 	import { refs } from '../refs.js';
 
-	function Counter(element) {
+	function Counter(host) {
 		const view = clone('counter');
 		const { label, decrement, increment, reset } = refs(view);
 
 		function update() {
-			label.textContent = element.count || 0;
+			label.textContent = host.count || 0;
 		}
 
 		decrement.onclick = () => {
-			element.count -= 1;
+			host.count -= 1;
 		};
 
 		increment.onclick = () => {
-			element.count += 1;
+			host.count += 1;
 		};
 
 		reset.onclick = () => {
-			element.count = 0;
+			host.count = 0;
 		};
 
-		element.onconnect = update;
-		element.onattributechange = update;
-		element.append(view);
+		host.onconnect = update;
+		host.onattributechange = update;
+		host.append(view);
 	}
 
 	defineElement('my-counter', Counter, {

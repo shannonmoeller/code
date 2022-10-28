@@ -15,7 +15,7 @@
 		<button ref="reset">↻</button>
 	`;
 
-	function Counter(element) {
+	function Counter(host) {
 		const view = counterTemplate();
 		const { label, decrement, increment, reset } = refs(view);
 
@@ -42,7 +42,7 @@
 
 		update();
 
-		element.append(view);
+		host.append(view);
 	}
 
 	defineElement('my-counter', Counter);

@@ -8,12 +8,12 @@
 	import { clone } from '../clone.js';
 	import { refs } from '../refs.js';
 
-	function Container(element) {
+	function Container(host) {
 		const view = clone('container');
 		const { slot } = refs(view);
 
-		slot.append(...element.childNodes);
-		element.append(view);
+		slot.append(...host.childNodes);
+		host.append(view);
 	}
 
 	defineElement('my-container', Container);

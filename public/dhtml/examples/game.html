@@ -6,26 +6,26 @@
 <script type="module">
 	import { defineElement } from '../define.js';
 
-	function GameGrid(grid) {
-		let xNode = document.createTextNode(grid.x);
-		let yNode = document.createTextNode(grid.y);
+	function GameGrid(host) {
+		let xNode = document.createTextNode(host.x);
+		let yNode = document.createTextNode(host.y);
 
 		function update() {
-			xNode.textContent = grid.x;
-			yNode.textContent = grid.y;
+			xNode.textContent = host.x;
+			yNode.textContent = host.y;
 		}
 
-		grid.addEventListener('click', (event) => {
-			grid.checked = !grid.checked;
+		host.addEventListener('click', (event) => {
+			host.checked = !host.checked;
 		});
 
-		grid.addEventListener('mousemove', (event) => {
-			grid.x = event.offsetX;
-			grid.y = event.offsetY;
+		host.addEventListener('mousemove', (event) => {
+			host.x = event.offsetX;
+			host.y = event.offsetY;
 			update();
 		});
 
-		grid.append(xNode, ',', yNode);
+		host.append(xNode, ',', yNode);
 	}
 
 	defineElement('game-grid', GameGrid, {

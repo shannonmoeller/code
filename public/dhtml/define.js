@@ -1,67 +1,90 @@
-const connection = Symbol('connection');
-const isInitialized = Symbol('isInitialized');
-const events = ['connect', 'disconnect', 'adopt', 'attributechange'];
+const defaultEvents = ['connect', 'disconnect', 'adopt', 'attributechange'];
 
-export function defineElement(name, init, options = {}) {
-	let { attributes = {}, base = HTMLElement, ...rest } = options;
+export class DhtmlElement extends HTMLElement {
+	static attributes = {};
+	static events = [];
+	static shadowMode = null;
 
-	class CustomElement extends base {
-		static get observedAttributes() {
-			return Object.keys(attributes).map(hyphenate);
-		}
+	static get observedAttributes() {
+		return Object.keys(this.attributes).map(hyphenate);
+	}
 
-		constructor() {
-			super();
+	#connection = null;
+	#isInitialized = false;
 
-			defineAttributes(this, attributes);
-			defineEvents(this, events);
-		}
+	constructor() {
+		super();
 
-		connectedCallback() {
-			if (!this.isConnected) {
-				return;
-			}
+		defineAttributes(this, this.constructor.attributes);
+		defineEvents(this, [...defaultEvents, ...this.constructor.events]);
 
-			const controller = new AbortController();
-			const { signal } = controller;
-
-			this[connection]?.abort();
-			this[connection] = controller;
-
-			if (!this[isInitialized]) {
-				this[isInitialized] = true;
-				init(this, { signal });
-			}
-
-			emit(this, 'connect', { signal });
-		}
-
-		disconnectedCallback() {
-			if (this.isConnected) {
-				return;
-			}
-
-			const controller = this[connection];
-			const { signal } = controller;
-
-			controller.abort();
-			this[connection] = null;
-
-			emit(this, 'disconnect', { signal });
-		}
-
-		adoptedCallback() {
-			emit(this, 'adopt');
-		}
-
-		attributeChangedCallback(name, oldValue, value) {
-			emit(this, 'attributechange', { name, value, oldValue });
+		if (this.constructor.shadowMode) {
+			this.attachShadow({ mode: this.constructor.shadowMode });
 		}
 	}
 
-	customElements.define(name, CustomElement, rest);
+	connectedCallback() {
+		if (!this.isConnected) {
+			return;
+		}
 
-	return CustomElement;
+		const connection = new AbortController();
+		const { signal } = connection;
+
+		this.#connection?.abort();
+		this.#connection = connection;
+
+		if (!this.#isInitialized) {
+			this.#isInitialized = true;
+			this.init?.();
+		}
+
+		this.dispatchEvent(
+			new CustomEvent('connect', {
+				detail: { signal },
+			})
+		);
+	}
+
+	disconnectedCallback() {
+		if (this.isConnected) {
+			return;
+		}
+
+		this.#connection?.abort();
+		this.#connection = null;
+
+		this.dispatchEvent(new CustomEvent('disconnect'));
+	}
+
+	adoptedCallback() {
+		this.dispatchEvent(new CustomEvent('adopt'));
+	}
+
+	attributeChangedCallback(name, oldValue, value) {
+		this.dispatchEvent(
+			new CustomEvent('attributechange', {
+				detail: { name, value, oldValue },
+			})
+		);
+	}
+}
+
+export function defineElement(name, init, options = {}) {
+	let { attributes, events, ...rest } = options;
+
+	customElements.define(
+		name,
+		class extends DhtmlElement {
+			static attributes = attributes ?? {};
+			static events = events ?? [];
+
+			init() {
+				init(this);
+			}
+		},
+		rest
+	);
 }
 
 export function defineAttributes(element, attributes = {}) {
@@ -133,8 +156,4 @@ export function defineEvent(element, event) {
 			callback = value;
 		},
 	});
-}
-
-export function emit(emitter, name, detail) {
-	return emitter.dispatchEvent(new CustomEvent(name, { detail }));
 }
