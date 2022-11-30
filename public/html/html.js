@@ -45,7 +45,7 @@ export function serialize(value) {
     return raw(value.map(serialize).join(''));
   }
 
-  if (value === null || value === undefined) {
+  if (value == null) {
     return '';
   }
 
