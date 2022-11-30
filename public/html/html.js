@@ -1,3 +1,9 @@
+/*!
+ * @license MIT
+ * Copyright (c) 2022 Shannon Moeller
+ * https://github.com/shannonmoeller/code
+ */
+
 const UNSAFE_RX = /[&<>"'`]/g;
 const ENTITIES = {
   '&': '&amp;',

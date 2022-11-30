@@ -1,3 +1,9 @@
+/*!
+ * @license MIT
+ * Copyright (c) 2022 Shannon Moeller
+ * https://github.com/shannonmoeller/code
+ */
+
 export const PRECISION = 1e-6;
 export const HALF_PRECISION = PRECISION / 2;
 

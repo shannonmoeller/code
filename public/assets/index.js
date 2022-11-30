@@ -1,3 +1,9 @@
+/*!
+ * @license MIT
+ * Copyright (c) 2022 Shannon Moeller
+ * https://github.com/shannonmoeller/code
+ */
+
 const initialPaths = localStorage.getItem('paths') || '';
 const paths = new Set(initialPaths.split(',').filter(Boolean));
 

@@ -1,3 +1,9 @@
+/*!
+ * @license MIT
+ * Copyright (c) 2022 Shannon Moeller
+ * https://github.com/shannonmoeller/code
+ */
+
 function typeOf(value) {
   return Object.prototype.toString.call(value).slice(8, -1);
 }

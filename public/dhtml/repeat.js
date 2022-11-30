@@ -1,3 +1,9 @@
+/*!
+ * @license MIT
+ * Copyright (c) 2022 Shannon Moeller
+ * https://github.com/shannonmoeller/code
+ */
+
 let keyProp = Symbol('com.npmjs.dhtml.repeat.key');
 
 let repeatDefaults = {

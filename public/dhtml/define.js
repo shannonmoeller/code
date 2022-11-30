@@ -1,3 +1,9 @@
+/*!
+ * @license MIT
+ * Copyright (c) 2022 Shannon Moeller
+ * https://github.com/shannonmoeller/code
+ */
+
 let defaultEvents = ['connect', 'disconnect', 'adopt', 'attributechange'];
 
 export class DhtmlElement extends HTMLElement {

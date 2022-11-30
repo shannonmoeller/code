@@ -1,3 +1,9 @@
+/*!
+ * @license MIT
+ * Copyright (c) 2022 Shannon Moeller
+ * https://github.com/shannonmoeller/code
+ */
+
 export const DPR = window.devicePixelRatio || 1;
 
 export function createContext(canvas, options = {}) {

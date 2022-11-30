@@ -1,3 +1,9 @@
+/*!
+ * @license MIT
+ * Copyright (c) 2022 Shannon Moeller
+ * https://github.com/shannonmoeller/code
+ */
+
 export function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
 }
