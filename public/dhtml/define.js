@@ -7,8 +7,8 @@
 let defaultEvents = ['connect', 'disconnect', 'adopt', 'attributechange'];
 
 export class DhtmlElement extends HTMLElement {
-  static observedAttributes = Object.keys(this.attributes).map(hyphenate);
   static attributes = {};
+  static observedAttributes = Object.keys(this.attributes).map(hyphenate);
   static events = [];
 
   #connection = null;
