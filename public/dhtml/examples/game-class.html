@@ -13,7 +13,9 @@
       y: Number,
     };
 
-    init() {
+    constructor() {
+      super();
+      
       let xNode = document.createTextNode(this.x);
       let yNode = document.createTextNode(this.y);
 
