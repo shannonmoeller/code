@@ -7,26 +7,16 @@
 let defaultEvents = ['connect', 'disconnect', 'adopt', 'attributechange'];
 
 export class DhtmlElement extends HTMLElement {
+  static observedAttributes = Object.keys(this.attributes).map(hyphenate);
   static attributes = {};
   static events = [];
-  static shadowMode = null;
-
-  static get observedAttributes() {
-    return Object.keys(this.attributes).map(hyphenate);
-  }
 
   #connection = null;
-  #isInitialized = false;
 
   constructor() {
     super();
-
     defineAttributes(this, this.constructor.attributes);
     defineEvents(this, [...defaultEvents, ...this.constructor.events]);
-
-    if (this.constructor.shadowMode) {
-      this.attachShadow({ mode: this.constructor.shadowMode });
-    }
   }
 
   connectedCallback() {
@@ -34,20 +24,12 @@ export class DhtmlElement extends HTMLElement {
       return;
     }
 
-    let connection = new AbortController();
-    let { signal } = connection;
-
     this.#connection?.abort();
-    this.#connection = connection;
-
-    if (!this.#isInitialized) {
-      this.#isInitialized = true;
-      this.init?.();
-    }
+    this.#connection = new AbortController();
 
     this.dispatchEvent(
       new CustomEvent('connect', {
-        detail: { signal },
+        detail: { signal: this.#connection.signal },
       })
     );
   }
@@ -85,7 +67,8 @@ export function defineElement(name, init, options = {}) {
       static attributes = attributes ?? {};
       static events = events ?? [];
 
-      init() {
+      constructor() {
+        super();
         init(this);
       }
     },
@@ -111,28 +94,24 @@ export function defineAttribute(element, property, descriptor = {}) {
   let attribute = hyphenate(property);
   let { get, set, ...rest } = descriptor;
 
-  if (get) {
-    if (get === Boolean) {
-      rest.get = () => {
-        return element.hasAttribute(attribute);
-      };
-    } else {
-      rest.get = () => {
-        return get(element.getAttribute(attribute));
-      };
-    }
+  if (get === Boolean) {
+    rest.get = () => {
+      return element.hasAttribute(attribute);
+    };
+  } else if (get) {
+    rest.get = () => {
+      return get(element.getAttribute(attribute));
+    };
   }
 
-  if (set) {
-    if (get === Boolean) {
-      rest.set = (value) => {
-        element.toggleAttribute(attribute, value);
-      };
-    } else {
-      rest.set = (value) => {
-        element.setAttribute(attribute, set(value));
-      };
-    }
+  if (get === Boolean) {
+    rest.set = (value) => {
+      element.toggleAttribute(attribute, value);
+    };
+  } else if (set) {
+    rest.set = (value) => {
+      element.setAttribute(attribute, set(value));
+    };
   }
 
   return Object.defineProperty(element, property, rest);
@@ -143,7 +122,7 @@ export function hyphenate(string) {
 }
 
 export function defineEvents(element, events = []) {
-  for (let event of events) {
+  for (let event of new Set(events)) {
     defineEvent(element, event);
   }
 }
