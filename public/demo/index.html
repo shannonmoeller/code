@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width" />
 <title>demo - dhtml</title>
@@ -20,7 +20,7 @@
     document.title = content.slice(0, 20);
     preview.srcdoc = content.replace(
       /^(<!doctype html>)?/i,
-      `$1<base href="${currentUrl}" />`
+      `$1<base href="${currentUrl}" />`,
     );
   }
 

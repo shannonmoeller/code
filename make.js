@@ -70,7 +70,7 @@ function isIgnored(path) {
 
 function renderPage(children) {
   return html`
-    <!DOCTYPE html>
+    <!doctype html>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>code</title>
@@ -91,7 +91,7 @@ function renderTree(children) {
   return html`
     <ol class="tree">
       ${children.map((child) =>
-        child.type === 'directory' ? renderDirectory(child) : renderFile(child)
+        child.type === 'directory' ? renderDirectory(child) : renderFile(child),
       )}
     </ol>
   `;

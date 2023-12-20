@@ -30,7 +30,7 @@ export class DhtmlElement extends HTMLElement {
     this.dispatchEvent(
       new CustomEvent('connect', {
         detail: { signal: this.#connection.signal },
-      })
+      }),
     );
   }
 
@@ -53,7 +53,7 @@ export class DhtmlElement extends HTMLElement {
     this.dispatchEvent(
       new CustomEvent('attributechange', {
         detail: { name, value, oldValue },
-      })
+      }),
     );
   }
 }
@@ -72,7 +72,7 @@ export function defineElement(name, init, options = {}) {
         init(this);
       }
     },
-    rest
+    rest,
   );
 }
 

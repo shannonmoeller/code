@@ -20,6 +20,14 @@ export function norm(value, min, max) {
   return (value - min) / (max - min);
 }
 
+export function gcd(a, b) {
+  return a ? gcd(b % a, a) : b;
+}
+
+export function lcm(a, b) {
+  return (a * b) / gcd(a, b);
+}
+
 export function round(value, multiple = 1) {
   return Math.round(value / multiple) * multiple || 0;
 }

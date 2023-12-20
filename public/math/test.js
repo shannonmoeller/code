@@ -6,7 +6,16 @@
 
 import { test } from '/test/test.js';
 
-import { clamp, lerp, map, norm, round, createRandom } from './math.js';
+import {
+  clamp,
+  lerp,
+  map,
+  norm,
+  gcd,
+  lcm,
+  round,
+  createRandom,
+} from './math.js';
 
 test('-- math.js --');
 
@@ -72,6 +81,14 @@ test('round(number, ?number)', (t) => {
 
   // 0.8999999999999999 because IEEE 754
   t.equal(round(1, 0.3), 0.3 * 3);
+});
+
+test('gcd(number, number)', (t) => {
+  t.equal(gcd(21, 28), 7);
+});
+
+test('lcm(number, number)', (t) => {
+  t.equal(lcm(13, 17), 221);
 });
 
 test('createRandom(number)', (t) => {

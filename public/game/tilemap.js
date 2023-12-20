@@ -405,7 +405,7 @@ export function createTilemap(options) {
         size * x,
         size * y,
         size,
-        size
+        size,
       );
     }
   }

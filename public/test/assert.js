@@ -56,7 +56,7 @@ function isDeepEqualMap(a, b) {
   }
 
   return Array.from(a.keys()).every((key) =>
-    isDeepEqual(a.get(key), b.get(key))
+    isDeepEqual(a.get(key), b.get(key)),
   );
 }
 

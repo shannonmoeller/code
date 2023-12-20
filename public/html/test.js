@@ -26,7 +26,7 @@ test('should create safe strings', (t) => {
       html``.raw = 'evil';
     },
     /raw|read.?only/,
-    'not writable'
+    'not writable',
   );
 
   t.throws(
@@ -37,7 +37,7 @@ test('should create safe strings', (t) => {
       });
     },
     /raw|configurable/,
-    'not configurable'
+    'not configurable',
   );
 });
 
@@ -70,13 +70,13 @@ test('should encode unsafe strings', (t) => {
   t.equal(
     String(encode('<img src="/" onerror="alert(`hi`)" />&nbsp;')),
     '&lt;img src=&quot;/&quot; onerror=&quot;alert(&#96;hi&#96;)&quot; /&gt;&amp;nbsp;',
-    'img onerror'
+    'img onerror',
   );
 
   t.equal(
     String(encode(`<script>alert(this && '"hi"');</script>`)),
     '&lt;script&gt;alert(this &amp;&amp; &#39;&quot;hi&quot;&#39;);&lt;/script&gt;',
-    'script tag'
+    'script tag',
   );
 });
 
@@ -89,6 +89,6 @@ test('should enforce type', async (t) => {
       html` ${() => {}} `;
     },
     /function/,
-    'disallow functions'
+    'disallow functions',
   );
 });

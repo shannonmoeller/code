@@ -81,7 +81,7 @@ test('store.subscribe(fn, options)', (t) => {
     },
     {
       immediate: true,
-    }
+    },
   );
 
   t.equal(count, 1);

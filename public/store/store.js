@@ -18,7 +18,7 @@ export function createStore(state) {
       return Promise.all(
         [...listeners].map(async (listener) => {
           await listener(state);
-        })
+        }),
       );
     },
 
