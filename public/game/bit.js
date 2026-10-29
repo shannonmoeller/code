@@ -85,7 +85,7 @@ export function chunk(values, width) {
   let { length } = values;
   let chunks = [];
 
-  for (let i = 0; i < length; ) {
+  for (let i = 0; i < length;) {
     chunks.push(values.slice(i, (i += width)));
   }
 
